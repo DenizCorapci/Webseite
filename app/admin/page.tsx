@@ -90,6 +90,15 @@ export default function AdminPage() {
               <span className="text-rust text-xl">→</span>
             </div>
           </Link>
+          <Link href="/admin/lernvideos" className="block bg-card border border-border hover:border-rust/50 transition-colors p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="section-label mb-1">Videobibliothek</p>
+                <h3 className="font-display text-2xl tracking-wider text-cream">LERNVIDEOS</h3>
+              </div>
+              <span className="text-rust text-xl">→</span>
+            </div>
+          </Link>
         </div>
       </div>
 
