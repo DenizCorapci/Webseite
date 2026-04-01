@@ -26,7 +26,7 @@ export default function MedienGalerie({ medien }: { medien: Medium[] }) {
 
   return (
     <>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px' }}>
         {medien.map((m, i) => (
           <div
             key={i}
