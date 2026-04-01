@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink:    '#0A0A0A',
-        surface:'#141414',
-        card:   '#1A1A1A',
+        ink:    'var(--color-ink)',
+        surface:'var(--color-surface)',
+        card:   'var(--color-card)',
         rust:   '#C4551C',
         'rust-light': '#E06530',
-        cream:  '#F2EDE4',
-        muted:  '#888888',
-        border: '#2A2A2A',
+        cream:  'var(--color-cream)',
+        muted:  'var(--color-muted)',
+        border: 'var(--color-border)',
       },
       fontFamily: {
         display: ['var(--font-bebas)', 'sans-serif'],

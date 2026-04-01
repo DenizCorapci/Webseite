@@ -5,6 +5,23 @@
 :root {
   --font-bebas: 'Bebas Neue', sans-serif;
   --font-dm-sans: 'DM Sans', sans-serif;
+
+  /* Dark mode (default) */
+  --color-ink:    #0A0A0A;
+  --color-surface:#141414;
+  --color-card:   #1A1A1A;
+  --color-cream:  #F2EDE4;
+  --color-muted:  #888888;
+  --color-border: #2A2A2A;
+}
+
+html.light {
+  --color-ink:    #F8F5F0;
+  --color-surface:#EEEBE4;
+  --color-card:   #E4E0D8;
+  --color-cream:  #1A1A1A;
+  --color-muted:  #666666;
+  --color-border: #C8C4BC;
 }
 
 html {
@@ -12,10 +29,11 @@ html {
 }
 
 body {
-  background-color: #0A0A0A;
-  color: #F2EDE4;
+  background-color: var(--color-ink);
+  color: var(--color-cream);
   font-family: var(--font-dm-sans);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Noise texture overlay */
@@ -35,8 +53,8 @@ body::before {
 }
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0A0A0A; }
-::-webkit-scrollbar-thumb { background: #2A2A2A; border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--color-ink); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #C4551C; }
 
 @layer utilities {

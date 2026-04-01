@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useUser, SignOutButton } from '@clerk/nextjs'
+import ThemeToggle from '@/components/ThemeToggle'
 
 const links = [
   { href: '/kurse',      label: 'Kurse' },
@@ -63,6 +64,7 @@ export default function Navbar() {
               Anmelden
             </Link>
           )}
+          <ThemeToggle />
           <Link href="/buchen" className="btn-primary text-xs py-2.5 px-5">
             Jetzt buchen
           </Link>
