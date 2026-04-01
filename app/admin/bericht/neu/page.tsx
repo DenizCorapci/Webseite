@@ -31,6 +31,75 @@ function NeuerBerichtForm() {
     'Phase 4: Praxis und Weiterführung',
   ]
 
+  function extractSection(text: string, von: string[], bis: string[]): string {
+    const lines = text.split('\n')
+    let capturing = false
+    const result: string[] = []
+    for (const line of lines) {
+      const trimmed = line.trim()
+      if (von.some(v => trimmed.toLowerCase().includes(v.toLowerCase()))) {
+        capturing = true
+        continue
+      }
+      if (capturing && bis.some(b => trimmed.toLowerCase().includes(b.toLowerCase()))) {
+        break
+      }
+      if (capturing && trimmed) result.push(trimmed)
+    }
+    return result.join('\n').trim()
+  }
+
+  function parseTxt(text: string) {
+    const titelMatch = text.match(/Verhaltensbericht[^\n]*für\s+([^\n]+)/i)
+    const titel = titelMatch ? `Verhaltensbericht — ${titelMatch[1].trim()}` : 'Verhaltensbericht'
+
+    const zusammenfassung = extractSection(text,
+      ['6. zusammenfassung', 'zusammenfassung und ausblick'],
+      ['7.', '---']
+    ) || extractSection(text, ['1. einleitung'], ['2. anamnese', '---'])
+
+    const anamnese = extractSection(text,
+      ['2. anamnese', 'anamnese:'],
+      ['3. analyse', '3. verhalten']
+    )
+
+    const verhaltensanalyse = extractSection(text,
+      ['3. analyse', 'analyse der verhaltensproblematik'],
+      ['4. management', '4. therapie']
+    )
+
+    const therapieplan = extractSection(text,
+      ['4. management', '5. therapie', 'therapie- und trainingsplan'],
+      ['6. zusammenfassung', '---']
+    )
+
+    const naechste_schritte = extractSection(text,
+      ['5.4', 'phase 4', 'praxis und weiterführung'],
+      ['6.', '---']
+    )
+
+    setForm(prev => ({
+      ...prev,
+      titel,
+      zusammenfassung: zusammenfassung || prev.zusammenfassung,
+      anamnese: anamnese || prev.anamnese,
+      verhaltensanalyse: verhaltensanalyse || prev.verhaltensanalyse,
+      therapieplan: therapieplan || prev.therapieplan,
+      naechste_schritte: naechste_schritte || prev.naechste_schritte,
+    }))
+  }
+
+  function handleTxtUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string
+      parseTxt(text)
+    }
+    reader.readAsText(file, 'UTF-8')
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -91,6 +160,18 @@ function NeuerBerichtForm() {
         NEUER BERICHT
       </h1>
       <p className="text-muted mb-10">für <span className="text-rust">{hundName}</span></p>
+
+      {/* TXT Import */}
+      <div className="bg-surface border border-rust/30 p-5 mb-8">
+        <p className="section-label mb-1">Verhaltensbericht importieren</p>
+        <p className="text-muted text-xs mb-3">TXT-Datei hochladen — Felder werden automatisch ausgefüllt</p>
+        <input
+          type="file"
+          accept=".txt"
+          onChange={handleTxtUpload}
+          className="w-full bg-card border border-border text-cream/60 px-4 py-3 text-sm file:mr-4 file:bg-rust file:text-cream file:border-0 file:px-3 file:py-1 file:text-xs file:uppercase file:tracking-widest cursor-pointer"
+        />
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
