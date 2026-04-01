@@ -69,12 +69,13 @@ export default async function LernvideosPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('lernvideos')
     .select('*')
     .order('reihenfolge', { ascending: true })
 
   const videos: Video[] = data ?? []
+  console.log('Lernvideos:', videos.length, error?.message)
 
   // Nach Kategorie gruppieren
   const kategorienMap = new Map<string, Video[]>()
@@ -85,6 +86,10 @@ export default async function LernvideosPage() {
 
   return (
     <>
+      {/* DEBUG — wird später entfernt */}
+      <div style={{ background: '#1a1a1a', color: '#888', fontSize: '12px', padding: '8px 24px', fontFamily: 'monospace' }}>
+        Videos in DB: {videos.length} {error ? `| Fehler: ${error.message}` : ''}
+      </div>
       <section className="pt-32 pb-16 bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-6">
           <p className="section-label mb-3">{videos.length > 0 ? 'Trainingstipps' : 'Demnächst'}</p>
