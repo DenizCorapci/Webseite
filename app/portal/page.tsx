@@ -101,23 +101,6 @@ export default function PortalPage() {
             </Link>
           </div>
 
-          {/* KI-Berater */}
-          <Link
-            href="/portal/chat"
-            className="block bg-card border border-rust/30 hover:border-rust transition-colors p-6"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-rust/20 border border-rust/40 flex items-center justify-center flex-shrink-0">
-                <span className="text-2xl">🐾</span>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-display text-xl tracking-wider text-cream">KI-BERATER</h3>
-                <p className="text-muted text-sm mt-0.5">Persönliche Trainingstipps für {hund.name} — basierend auf dem Verhaltensbericht</p>
-              </div>
-              <span className="text-rust text-xl flex-shrink-0">→</span>
-            </div>
-          </Link>
-
           {/* Verhaltensberichte */}
           <div>
             <h3 className="font-display text-2xl tracking-wider text-cream mb-4">VERHALTENSBERICHTE</h3>
