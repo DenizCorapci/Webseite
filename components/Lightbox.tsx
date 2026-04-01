@@ -37,7 +37,6 @@ export default function MedienGalerie({ medien }: { medien: Medium[] }) {
             style={{
               position: 'relative',
               cursor: 'zoom-in',
-              overflow: 'hidden',
               border: '1px solid #2A2A2A',
               backgroundColor: '#1A1A1A',
             }}
