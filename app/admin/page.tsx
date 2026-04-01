@@ -69,6 +69,19 @@ export default function AdminPage() {
         </div>
       </div>
 
+      {/* Schnellzugriff */}
+      <div className="mb-10">
+        <Link href="/admin/termine" className="block bg-card border border-border hover:border-rust/50 transition-colors p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="section-label mb-1">Kurskalender</p>
+              <h3 className="font-display text-2xl tracking-wider text-cream">TERMINE VERWALTEN</h3>
+            </div>
+            <span className="text-rust text-xl">→</span>
+          </div>
+        </Link>
+      </div>
+
       {/* Hundeliste */}
       <h2 className="font-display text-3xl tracking-wider text-cream mb-4">ALLE HUNDE</h2>
       {hunde.length === 0 ? (
