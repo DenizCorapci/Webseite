@@ -4,7 +4,6 @@ export const dynamic = 'force-dynamic'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
-import { use } from 'react'
 
 type Bericht = {
   id: string
@@ -19,8 +18,8 @@ type Bericht = {
   medien: { url: string; typ: 'foto' | 'video'; beschriftung: string }[]
 }
 
-export default function BerichtDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function BerichtDetailPage({ params }: { params: { id: string } }) {
+  const { id } = params
   const [bericht, setBericht] = useState<Bericht | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -72,7 +71,6 @@ export default function BerichtDetailPage({ params }: { params: Promise<{ id: st
           </div>
         ))}
 
-        {/* Fotos & Videos */}
         {bericht.medien.length > 0 && (
           <div>
             <h3 className="font-display text-2xl tracking-wider text-cream mb-4">FOTOS & VIDEOS</h3>
