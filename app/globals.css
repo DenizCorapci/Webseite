@@ -16,12 +16,12 @@
 }
 
 html.light {
-  --color-ink:    248 245 240;
-  --color-surface:238 235 228;
-  --color-card:   228 224 216;
+  --color-ink:    224 219 210;
+  --color-surface:213 208 198;
+  --color-card:   202 197 186;
   --color-cream:  26 26 26;
-  --color-muted:  102 102 102;
-  --color-border: 200 196 188;
+  --color-muted:  90 85 78;
+  --color-border: 178 172 162;
 }
 
 html {
