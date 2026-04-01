@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 type Medium = {
   url: string
@@ -11,94 +11,126 @@ type Medium = {
 export default function MedienGalerie({ medien }: { medien: Medium[] }) {
   const [aktiv, setAktiv] = useState<number | null>(null)
 
+  const schliessen = useCallback(() => setAktiv(null), [])
+
   useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setAktiv(null)
+    if (aktiv === null) return
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') schliessen() }
+    window.addEventListener('keydown', handler)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', handler)
+      document.body.style.overflow = ''
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [aktiv, schliessen])
 
   return (
     <>
-      <style>{`
-        .medien-item { position: relative; cursor: pointer; overflow: hidden; border: 1px solid #2A2A2A; background: #1A1A1A; }
-        .medien-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; transition: transform 0.4s ease; }
-        .medien-item:hover img { transform: scale(1.1); }
-        .medien-overlay { position: absolute; inset: 0; background: rgba(10,10,10,0); transition: background 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        .medien-item:hover .medien-overlay { background: rgba(10,10,10,0.5); }
-        .medien-icon { font-size: 2rem; opacity: 0; transition: opacity 0.3s ease; }
-        .medien-item:hover .medien-icon { opacity: 1; }
-      `}</style>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
         {medien.map((m, i) => (
-          <div key={i} className="medien-item" onClick={() => setAktiv(i)}>
+          <div
+            key={i}
+            role="button"
+            tabIndex={0}
+            onClick={() => setAktiv(i)}
+            onKeyDown={(e) => e.key === 'Enter' && setAktiv(i)}
+            style={{
+              position: 'relative',
+              cursor: 'zoom-in',
+              overflow: 'hidden',
+              border: '1px solid #2A2A2A',
+              backgroundColor: '#1A1A1A',
+            }}
+          >
             {m.typ === 'foto' ? (
-              <img src={m.url} alt={m.beschriftung || ''} />
+              <img
+                src={m.url}
+                alt={m.beschriftung || ''}
+                style={{
+                  width: '100%',
+                  aspectRatio: '1 / 1',
+                  objectFit: 'cover',
+                  display: 'block',
+                  transition: 'transform 0.4s ease',
+                  willChange: 'transform',
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.1)' }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)' }}
+              />
             ) : (
-              <div style={{ position: 'relative', aspectRatio: '16/9', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: '3rem' }}>▶</span>
+              <div style={{
+                aspectRatio: '16 / 9',
+                backgroundColor: '#0A0A0A',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <span style={{ fontSize: '3rem', color: '#F2EDE4' }}>▶</span>
               </div>
             )}
-            <div className="medien-overlay">
-              <span className="medien-icon">🔍</span>
-            </div>
             {m.beschriftung && (
-              <p style={{ fontSize: '0.75rem', color: '#888', padding: '0.5rem 0.75rem' }}>{m.beschriftung}</p>
+              <p style={{ fontSize: '0.75rem', color: '#888888', padding: '6px 12px', margin: 0 }}>
+                {m.beschriftung}
+              </p>
             )}
           </div>
         ))}
       </div>
 
-      {/* Lightbox */}
+      {/* Lightbox Modal */}
       {aktiv !== null && (
         <div
-          onClick={() => setAktiv(null)}
+          onClick={schliessen}
           style={{
-            position: 'fixed', inset: 0, zIndex: 9999,
-            background: 'rgba(10,10,10,0.97)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '1rem',
+            position: 'fixed',
+            top: 0, left: 0, right: 0, bottom: 0,
+            zIndex: 99999,
+            backgroundColor: 'rgba(10, 10, 10, 0.97)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px',
           }}
         >
           {/* Schliessen */}
           <button
-            onClick={() => setAktiv(null)}
+            onClick={schliessen}
             style={{
-              position: 'absolute', top: '1rem', right: '1.5rem',
-              background: 'none', border: 'none', color: '#F2EDE4',
-              fontSize: '2.5rem', cursor: 'pointer', lineHeight: 1, zIndex: 10,
+              position: 'absolute', top: '16px', right: '24px',
+              background: 'transparent', border: 'none',
+              color: '#F2EDE4', fontSize: '2rem', cursor: 'pointer',
+              lineHeight: 1, zIndex: 1,
             }}
           >✕</button>
 
-          {/* Navigation */}
+          {/* Prev */}
           {aktiv > 0 && (
             <button
               onClick={(e) => { e.stopPropagation(); setAktiv(aktiv - 1) }}
               style={{
-                position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)',
-                background: 'none', border: '1px solid #2A2A2A', color: '#F2EDE4',
-                fontSize: '1.5rem', cursor: 'pointer', padding: '0.5rem 1rem', zIndex: 10,
+                position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)',
+                background: 'transparent', border: '1px solid #2A2A2A',
+                color: '#F2EDE4', fontSize: '1.5rem', cursor: 'pointer',
+                padding: '8px 16px', zIndex: 1,
               }}
             >‹</button>
           )}
+
+          {/* Next */}
           {aktiv < medien.length - 1 && (
             <button
               onClick={(e) => { e.stopPropagation(); setAktiv(aktiv + 1) }}
               style={{
-                position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)',
-                background: 'none', border: '1px solid #2A2A2A', color: '#F2EDE4',
-                fontSize: '1.5rem', cursor: 'pointer', padding: '0.5rem 1rem', zIndex: 10,
+                position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)',
+                background: 'transparent', border: '1px solid #2A2A2A',
+                color: '#F2EDE4', fontSize: '1.5rem', cursor: 'pointer',
+                padding: '8px 16px', zIndex: 1,
               }}
             >›</button>
           )}
 
-          {/* Inhalt */}
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{ maxWidth: '56rem', width: '100%', maxHeight: '90vh' }}
-          >
+          {/* Bild / Video */}
+          <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', width: '100%' }}>
             {medien[aktiv].typ === 'foto' ? (
               <img
                 src={medien[aktiv].url}
@@ -108,12 +140,13 @@ export default function MedienGalerie({ medien }: { medien: Medium[] }) {
             ) : (
               <video
                 src={medien[aktiv].url}
-                controls autoPlay
+                controls
+                autoPlay
                 style={{ width: '100%', maxHeight: '85vh', display: 'block' }}
               />
             )}
             {medien[aktiv].beschriftung && (
-              <p style={{ textAlign: 'center', color: '#888', fontSize: '0.875rem', marginTop: '0.75rem' }}>
+              <p style={{ textAlign: 'center', color: '#888888', fontSize: '14px', marginTop: '12px' }}>
                 {medien[aktiv].beschriftung}
               </p>
             )}
