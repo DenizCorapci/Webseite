@@ -23,10 +23,10 @@ export const metadata: Metadata = {
     template: '%s | Bad Dog Hundeschule',
   },
   description:
-    'Bad Dog ist deine Hundeschule in Adlikon bei Winterthur. Hundeschule, Einzeltraining, Social Walks und Mantrailing mit Trainer Marcus.',
+    'Bad Dog ist deine Hundeschule in 5330 Zurzach. Hundeschule, Einzeltraining, Social Walks und Mantrailing mit Trainer Marcus.',
   keywords: [
     'Hundeschule Winterthur',
-    'Hundeschule Adlikon',
+    'Hundeschule Zurzach',
     'Mantrailing Winterthur',
     'Einzeltraining Hund Winterthur',
     'Social Walks Hund',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Bad Dog — Hundeschule Winterthur',
-    description: 'Hundeschule · Einzeltraining · Social Walks · Mantrailing in Adlikon bei Winterthur.',
+    description: 'Hundeschule · Einzeltraining · Social Walks · Mantrailing in 5330 Zurzach.',
     locale: 'de_CH',
     type: 'website',
   },

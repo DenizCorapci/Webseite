@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Hundeschule',
-  description: 'Gruppentraining für Hunde aller Rassen in Adlikon bei Winterthur. Grundgehorsam, Leinenführigkeit und Sozialverhalten mit Trainer Marcus.',
+  description: 'Gruppentraining für Hunde aller Rassen in 5330 Zurzach. Grundgehorsam, Leinenführigkeit und Sozialverhalten mit Trainer Marcus.',
 }
 
 export default function HundeschulePage() {
@@ -28,7 +28,7 @@ export default function HundeschulePage() {
       details={[
         { label: 'Format', value: 'Gruppe (max. 6)' },
         { label: 'Dauer', value: 'ca. 60 Min.' },
-        { label: 'Ort', value: 'Adlikon, 8452' },
+        { label: 'Ort', value: 'Zurzach, 5330' },
         { label: 'Buchung', value: 'Auf Anfrage' },
       ]}
     />

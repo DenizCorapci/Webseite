@@ -28,7 +28,7 @@ export default function MantrailingPage() {
       details={[
         { label: 'Format', value: 'Einzel / Klein-Gruppe' },
         { label: 'Dauer', value: 'ca. 90 Min.' },
-        { label: 'Ort', value: 'Gelände Adlikon & Umgebung' },
+        { label: 'Ort', value: 'Gelände Zurzach & Umgebung' },
         { label: 'Level', value: 'Anfänger bis Profi' },
       ]}
     />

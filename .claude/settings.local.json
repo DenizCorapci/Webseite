@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx skills:*)"
+      "Bash(npx skills:*)",
+      "Bash(vercel ls:*)",
+      "Bash(rm -rf .vercel)",
+      "Bash(vercel link:*)",
+      "Bash(vercel deploy:*)",
+      "Bash(vercel inspect:*)"
     ]
   }
 }

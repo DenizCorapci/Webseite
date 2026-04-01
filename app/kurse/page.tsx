@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Kurse',
-  description: 'Hundeschule, Einzeltraining, Social Walks und Mantrailing mit Trainer Marcus in Adlikon bei Winterthur.',
+  description: 'Hundeschule, Einzeltraining, Social Walks und Mantrailing mit Trainer Marcus in 5330 Zurzach.',
 }
 
 const courses = [
@@ -27,7 +27,7 @@ const courses = [
     slug: 'social-walks',
     title: 'Social Walks',
     subtitle: 'Gemeinsam unterwegs',
-    desc: 'Entspanntes Laufen in der Gruppe durch die Natur rund um Adlikon. Hunde sozialisieren, Halter tauschen sich aus — Marcus ist immer dabei.',
+    desc: 'Entspanntes Laufen in der Gruppe durch die Natur rund um Zurzach. Hunde sozialisieren, Halter tauschen sich aus — Marcus ist immer dabei.',
     details: ['Regelmässige Termine', 'Naturstrecken', 'Für sozialisierte Hunde', 'Gemeinschaft inklusive'],
     icon: '🌿',
   },

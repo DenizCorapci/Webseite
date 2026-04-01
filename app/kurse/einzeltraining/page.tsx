@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Einzeltraining',
-  description: '1:1 Hundetraining mit Marcus in Adlikon bei Winterthur. Maßgeschneidertes Training für deine individuelle Situation.',
+  description: '1:1 Hundetraining mit Marcus in 5330 Zurzach. Maßgeschneidertes Training für deine individuelle Situation.',
 }
 
 export default function EinzeltrainingPage() {
@@ -28,7 +28,7 @@ export default function EinzeltrainingPage() {
       details={[
         { label: 'Format', value: '1:1' },
         { label: 'Dauer', value: 'ca. 60–90 Min.' },
-        { label: 'Ort', value: 'Flexibel / Adlikon' },
+        { label: 'Ort', value: 'Flexibel / Zurzach' },
         { label: 'Buchung', value: 'Auf Anfrage' },
       ]}
     />

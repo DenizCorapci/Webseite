@@ -35,7 +35,7 @@ const courses = [
     slug: 'social-walks',
     title: 'Social Walks',
     subtitle: 'Gemeinsam unterwegs',
-    desc: 'Entspanntes Laufen in der Gruppe durch die Natur rund um Adlikon.',
+    desc: 'Entspanntes Laufen in der Gruppe durch die Natur rund um Zurzach.',
     icon: '🌿',
     color: 'from-emerald-900/20 to-transparent',
   },
@@ -74,7 +74,7 @@ const testimonials = [
   {
     quote: 'Die Social Walks sind weit mehr als spazieren gehen. Jede Woche ein Highlight!',
     name: 'Mirjam W.',
-    location: 'Adlikon',
+    location: 'Zurzach',
     course: 'Social Walks',
     initials: 'MW',
   },
@@ -111,7 +111,7 @@ export default function HomePage() {
           {/* Text */}
           <div className="order-2 lg:order-1">
             <p className="section-label mb-6 animate-fade-up">
-              Hundeschule · Adlikon bei Winterthur
+              Hundeschule · 5330 Zurzach
             </p>
             <h1 className="font-display leading-none tracking-wider text-cream animate-fade-up-delay-1"
               style={{ fontSize: 'clamp(5rem, 12vw, 9rem)' }}>
@@ -120,7 +120,7 @@ export default function HomePage() {
             </h1>
             <p className="mt-6 text-cream/60 text-lg leading-relaxed max-w-md animate-fade-up-delay-2">
               Hundeschule, Einzeltraining, Social Walks und Mantrailing —
-              mit Trainer Marcus in Adlikon.
+              mit Trainer Marcus in Zurzach.
             </p>
             <div className="mt-8 flex flex-wrap gap-4 animate-fade-up-delay-3">
               <Link href="/buchen" className="btn-primary">
@@ -364,7 +364,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-6 pt-6 border-t border-border">
                   <p className="text-xs text-muted">Standort</p>
-                  <p className="text-sm text-cream mt-1">Andelfingerstrasse 2b, 8452 Adlikon</p>
+                  <p className="text-sm text-cream mt-1">Andelfingerstrasse 2b, 5330 Zurzach</p>
                 </div>
               </div>
               <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-rust" />
@@ -468,7 +468,7 @@ export default function HomePage() {
             <Link href="/kontakt" className="btn-outline">Fragen? Meld dich!</Link>
           </div>
           <p className="mt-12 text-muted text-sm">
-            Bad Dog Hundeschule · Andelfingerstrasse 2b · 8452 Adlikon
+            Bad Dog Hundeschule · Andelfingerstrasse 2b · 5330 Zurzach
           </p>
         </div>
       </section>

@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Über uns',
-  description: 'Bad Dog Hundeschule — Trainer Marcus und Maskottchen Pino in Adlikon bei Winterthur.',
+  description: 'Bad Dog Hundeschule — Trainer Marcus und Maskottchen Pino in 5330 Zurzach.',
 }
 
 export default function UeberUnsPage() {

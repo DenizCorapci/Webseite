@@ -3,7 +3,7 @@ import BookingForm from '@/components/BookingForm'
 
 export const metadata: Metadata = {
   title: 'Kurs buchen',
-  description: 'Sende eine Buchungsanfrage für einen Kurs bei Bad Dog Hundeschule in Adlikon bei Winterthur.',
+  description: 'Sende eine Buchungsanfrage für einen Kurs bei Bad Dog Hundeschule in 5330 Zurzach.',
 }
 
 export default function BuchenPage() {
@@ -53,7 +53,7 @@ export default function BuchenPage() {
             <address className="not-italic text-sm text-cream/70 space-y-1">
               <p className="font-semibold text-cream">Bad Dog Hundeschule</p>
               <p>Andelfingerstrasse 2b</p>
-              <p>8452 Adlikon</p>
+              <p>5330 Zurzach</p>
             </address>
           </div>
 

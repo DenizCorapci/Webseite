@@ -25,7 +25,7 @@ export default function Footer() {
             </Link>
             <p className="text-muted text-sm leading-relaxed">
               Hundeschule für Hunde, die mehr können.
-              <br />Adlikon bei Winterthur.
+              <br />5330 Zurzach.
             </p>
           </div>
 
@@ -56,7 +56,7 @@ export default function Footer() {
             <address className="not-italic text-sm text-cream/60 space-y-1.5">
               <p>Bad Dog Hundeschule</p>
               <p>Andelfingerstrasse 2b</p>
-              <p>8452 Adlikon</p>
+              <p>5330 Zurzach</p>
               <p className="pt-2">
                 <Link href="/kontakt" className="text-rust hover:text-rust-light transition-colors">
                   Nachricht senden →
@@ -68,7 +68,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted text-xs">
-            © {new Date().getFullYear()} Bad Dog Hundeschule · Adlikon
+            © {new Date().getFullYear()} Bad Dog Hundeschule · Zurzach
           </p>
           <p className="text-muted text-xs">
             Trainer: Marcus

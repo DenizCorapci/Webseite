@@ -3,7 +3,7 @@ import ContactForm from '@/components/ContactForm'
 
 export const metadata: Metadata = {
   title: 'Kontakt',
-  description: 'Kontaktiere Bad Dog Hundeschule in Adlikon bei Winterthur. Fragen, Anfragen, Rückmeldungen — Marcus antwortet innerhalb von 48 Stunden.',
+  description: 'Kontaktiere Bad Dog Hundeschule in 5330 Zurzach. Fragen, Anfragen, Rückmeldungen — Marcus antwortet innerhalb von 48 Stunden.',
 }
 
 export default function KontaktPage() {
@@ -36,7 +36,7 @@ export default function KontaktPage() {
             <address className="not-italic text-cream/70 text-sm space-y-1.5">
               <p className="font-semibold text-cream">Bad Dog Hundeschule</p>
               <p>Andelfingerstrasse 2b</p>
-              <p>8452 Adlikon</p>
+              <p>5330 Zurzach</p>
             </address>
           </div>
 
@@ -46,9 +46,9 @@ export default function KontaktPage() {
               <div className="text-center">
                 <div className="text-3xl mb-2">📍</div>
                 <p className="text-muted text-xs">Andelfingerstrasse 2b</p>
-                <p className="text-muted text-xs">8452 Adlikon</p>
+                <p className="text-muted text-xs">5330 Zurzach</p>
                 <a
-                  href="https://maps.google.com/?q=Andelfingerstrasse+2b,+8452+Adlikon"
+                  href="https://maps.google.com/?q=Andelfingerstrasse+2b,+5330+Zurzach"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block mt-3 text-rust text-xs hover:text-rust-light transition-colors"
