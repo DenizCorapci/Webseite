@@ -434,11 +434,11 @@ export default function HomePage() {
               LERNVIDEOS
             </h2>
             <p className="text-muted mt-3 max-w-md">
-              Marcus bereitet eine Videobibliothek vor — mit Trainingstipps und Übungsanleitungen.
+              Trainingstipps und Übungsanleitungen von Marcus — direkt aus dem Trainingsalltag.
             </p>
           </div>
           <Link href="/lernvideos" className="btn-outline flex-shrink-0">
-            Informiert werden
+            Videos ansehen →
           </Link>
         </div>
       </section>
