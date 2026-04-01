@@ -1,12 +1,9 @@
+'use client'
 export const dynamic = 'force-dynamic'
-import Link from 'next/link'
-import type { Metadata } from 'next'
-import { createClient } from '@supabase/supabase-js'
 
-export const metadata: Metadata = {
-  title: 'Lernvideos',
-  description: 'Lernvideos von Bad Dog Hundeschule — Trainingstipps und Übungsanleitungen von Marcus.',
-}
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import Link from 'next/link'
 
 type Video = {
   id: string
@@ -18,7 +15,6 @@ type Video = {
 }
 
 function VideoEmbed({ url }: { url: string }) {
-  // YouTube
   const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
   if (ytMatch) {
     return (
@@ -32,7 +28,6 @@ function VideoEmbed({ url }: { url: string }) {
       </div>
     )
   }
-  // Vimeo
   const vimeoMatch = url.match(/vimeo\.com\/(\d+)/)
   if (vimeoMatch) {
     return (
@@ -46,7 +41,6 @@ function VideoEmbed({ url }: { url: string }) {
       </div>
     )
   }
-  // Direktes Video (mp4 etc.)
   return (
     <video controls className="w-full aspect-video bg-black">
       <source src={url} />
@@ -63,21 +57,21 @@ const planned = [
   { icon: '🏡', title: 'Zuhause-Training', desc: 'Übungen für drin und draussen.' },
 ]
 
-export default async function LernvideosPage() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+export default function LernvideosPage() {
+  const [videos, setVideos] = useState<Video[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const { data, error } = await supabase
-    .from('lernvideos')
-    .select('*')
-    .order('reihenfolge', { ascending: true })
+  useEffect(() => {
+    supabase
+      .from('lernvideos')
+      .select('*')
+      .order('reihenfolge', { ascending: true })
+      .then(({ data }) => {
+        setVideos(data ?? [])
+        setLoading(false)
+      })
+  }, [])
 
-  const videos: Video[] = data ?? []
-  console.log('Lernvideos:', videos.length, error?.message)
-
-  // Nach Kategorie gruppieren
   const kategorienMap = new Map<string, Video[]>()
   for (const v of videos) {
     if (!kategorienMap.has(v.kategorie)) kategorienMap.set(v.kategorie, [])
@@ -86,27 +80,26 @@ export default async function LernvideosPage() {
 
   return (
     <>
-      {/* DEBUG — wird später entfernt */}
-      <div style={{ background: '#1a1a1a', color: '#888', fontSize: '12px', padding: '8px 24px', fontFamily: 'monospace' }}>
-        Videos in DB: {videos.length} {error ? `| Fehler: ${error.message}` : ''}
-      </div>
       <section className="pt-32 pb-16 bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-6">
-          <p className="section-label mb-3">{videos.length > 0 ? 'Trainingstipps' : 'Demnächst'}</p>
+          <p className="section-label mb-3">{!loading && videos.length > 0 ? 'Trainingstipps' : 'Demnächst'}</p>
           <div className="divider mb-6" />
           <h1 className="font-display text-7xl sm:text-8xl tracking-wider text-cream">
             LERN<br /><span className="text-rust">VIDEOS</span>
           </h1>
           <p className="mt-6 text-cream/60 text-lg max-w-xl">
-            {videos.length > 0
+            {!loading && videos.length > 0
               ? 'Trainingstipps, Übungsanleitungen und ehrliche Einblicke aus dem Trainingsalltag von Marcus.'
               : 'Marcus bereitet eine Videobibliothek vor — Trainingstipps, Übungsanleitungen und ehrliche Einblicke aus dem Trainingsalltag.'}
           </p>
         </div>
       </section>
 
-      {videos.length === 0 ? (
-        /* Coming Soon */
+      {loading ? (
+        <div className="flex items-center justify-center py-32">
+          <p className="text-muted">Lade...</p>
+        </div>
+      ) : videos.length === 0 ? (
         <section className="max-w-7xl mx-auto px-6 py-20">
           <div className="bg-card border border-rust/30 p-12 text-center mb-16 relative overflow-hidden">
             <div className="font-display text-[15vw] text-rust/5 absolute inset-0 flex items-center justify-center leading-none pointer-events-none select-none">SOON</div>
@@ -134,7 +127,6 @@ export default async function LernvideosPage() {
           </div>
         </section>
       ) : (
-        /* Videos anzeigen */
         <section className="max-w-7xl mx-auto px-6 py-16 space-y-16">
           {Array.from(kategorienMap.entries()).map(([kategorie, vids]) => (
             <div key={kategorie}>
