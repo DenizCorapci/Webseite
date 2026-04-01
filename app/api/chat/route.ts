@@ -59,9 +59,8 @@ Wenn du dir bei etwas nicht sicher bist, empfehle dem Kunden, direkt mit Marcus 
 ${kontext ? `--- Hundeprofil und aktueller Verhaltensbericht ---\n${kontext}---` : 'Noch kein Hundeprofil vorhanden.'}`
 
   const stream = await anthropic.messages.create({
-    model: 'claude-opus-4-6',
+    model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
-    thinking: { type: 'adaptive' },
     system: systemPrompt,
     messages: messages,
     stream: true,
