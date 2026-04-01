@@ -10,6 +10,7 @@ type Medium = {
 
 export default function MedienGalerie({ medien }: { medien: Medium[] }) {
   const [aktiv, setAktiv] = useState<Medium | null>(null)
+  const [hovered, setHovered] = useState<number | null>(null)
 
   return (
     <>
@@ -17,24 +18,56 @@ export default function MedienGalerie({ medien }: { medien: Medium[] }) {
         {medien.map((m, i) => (
           <div
             key={i}
-            className="bg-card border border-border overflow-hidden group relative cursor-pointer"
+            className="relative cursor-pointer border border-border bg-card"
+            style={{ overflow: 'hidden' }}
             onClick={() => setAktiv(m)}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
           >
             {m.typ === 'foto' ? (
               <img
                 src={m.url}
                 alt={m.beschriftung}
-                className="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
+                style={{
+                  width: '100%',
+                  aspectRatio: '1',
+                  objectFit: 'cover',
+                  display: 'block',
+                  transform: hovered === i ? 'scale(1.08)' : 'scale(1)',
+                  transition: 'transform 0.35s ease',
+                }}
               />
             ) : (
-              <video src={m.url} className="w-full aspect-video" />
+              <video
+                src={m.url}
+                style={{ width: '100%', aspectRatio: '16/9', display: 'block' }}
+              />
             )}
-            {/* Hover-Overlay */}
-            <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/40 transition-all duration-300 flex items-center justify-center">
-              <span className="text-cream text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+
+            {/* Hover Overlay */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: hovered === i ? 'rgba(10,10,10,0.45)' : 'rgba(10,10,10,0)',
+                transition: 'background 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '2rem',
+                  opacity: hovered === i ? 1 : 0,
+                  transition: 'opacity 0.3s ease',
+                  userSelect: 'none',
+                }}
+              >
                 🔍
               </span>
             </div>
+
             {m.beschriftung && (
               <p className="text-xs text-muted px-3 py-2">{m.beschriftung}</p>
             )}
@@ -45,30 +78,56 @@ export default function MedienGalerie({ medien }: { medien: Medium[] }) {
       {/* Lightbox */}
       {aktiv && (
         <div
-          className="fixed inset-0 z-50 bg-ink/95 flex items-center justify-center p-4"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: 'rgba(10,10,10,0.96)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1rem',
+          }}
           onClick={() => setAktiv(null)}
         >
           <button
-            className="absolute top-5 right-6 text-cream/60 hover:text-cream text-3xl font-light transition-colors"
+            style={{
+              position: 'absolute',
+              top: '1.25rem',
+              right: '1.5rem',
+              color: '#F2EDE4',
+              fontSize: '2rem',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              lineHeight: 1,
+            }}
             onClick={() => setAktiv(null)}
           >
             ✕
           </button>
           <div
-            className="max-w-4xl max-h-[90vh] w-full"
+            style={{ maxWidth: '56rem', width: '100%', maxHeight: '90vh' }}
             onClick={(e) => e.stopPropagation()}
           >
             {aktiv.typ === 'foto' ? (
               <img
                 src={aktiv.url}
                 alt={aktiv.beschriftung}
-                className="w-full max-h-[85vh] object-contain"
+                style={{ width: '100%', maxHeight: '85vh', objectFit: 'contain', display: 'block' }}
               />
             ) : (
-              <video src={aktiv.url} controls autoPlay className="w-full max-h-[85vh]" />
+              <video
+                src={aktiv.url}
+                controls
+                autoPlay
+                style={{ width: '100%', maxHeight: '85vh', display: 'block' }}
+              />
             )}
             {aktiv.beschriftung && (
-              <p className="text-center text-cream/60 text-sm mt-3">{aktiv.beschriftung}</p>
+              <p style={{ textAlign: 'center', color: '#888', fontSize: '0.875rem', marginTop: '0.75rem' }}>
+                {aktiv.beschriftung}
+              </p>
             )}
           </div>
         </div>
