@@ -4,6 +4,7 @@ import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { ClerkProvider } from '@clerk/nextjs'
+import WhatsAppButton from '@/components/WhatsAppButton'
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -53,6 +54,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
+          <WhatsAppButton />
         </body>
       </html>
     </ClerkProvider>
