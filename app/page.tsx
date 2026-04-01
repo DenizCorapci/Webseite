@@ -434,7 +434,7 @@ export default function HomePage() {
               LERNVIDEOS
             </h2>
             <p className="text-muted mt-3 max-w-md">
-              Trainingstipps und Übungsanleitungen von Marcus — direkt aus dem Trainingsalltag.
+              Kein Fachjargon, keine Theorie um der Theorie willen. Marcus zeigt, wie Training im echten Alltag funktioniert — mit echten Hunden, echten Problemen, echten Lösungen.
             </p>
           </div>
           <Link href="/lernvideos" className="btn-outline flex-shrink-0">
