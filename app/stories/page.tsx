@@ -1,12 +1,9 @@
+'use client'
 export const dynamic = 'force-dynamic'
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { createClient } from '@supabase/supabase-js'
 
-export const metadata: Metadata = {
-  title: 'Vorher & Nachher',
-  description: 'Echte Geschichten von Hunden und ihren Menschen — wie Training bei Bad Dog Hundeschule ihr Leben verändert hat.',
-}
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import Link from 'next/link'
 
 type Story = {
   id: string
@@ -31,18 +28,20 @@ const farben = [
   'from-amber-900/10',
 ]
 
-export default async function StoriesPage() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+export default function StoriesPage() {
+  const [stories, setStories] = useState<Story[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const { data } = await supabase
-    .from('stories')
-    .select('*')
-    .order('reihenfolge', { ascending: true })
-
-  const stories: Story[] = data ?? []
+  useEffect(() => {
+    supabase
+      .from('stories')
+      .select('*')
+      .order('reihenfolge', { ascending: true })
+      .then(({ data }) => {
+        setStories(data ?? [])
+        setLoading(false)
+      })
+  }, [])
 
   return (
     <>
@@ -59,7 +58,11 @@ export default async function StoriesPage() {
       </section>
 
       <section className="max-w-7xl mx-auto px-6 pb-24 space-y-24">
-        {stories.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <p className="text-muted">Lade...</p>
+          </div>
+        ) : stories.length === 0 ? (
           <div className="bg-card border border-border p-12 text-center">
             <p className="text-muted">Noch keine Stories vorhanden.</p>
           </div>

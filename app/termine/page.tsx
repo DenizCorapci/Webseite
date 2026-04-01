@@ -1,12 +1,9 @@
+'use client'
 export const dynamic = 'force-dynamic'
-import Link from 'next/link'
-import type { Metadata } from 'next'
-import { createClient } from '@supabase/supabase-js'
 
-export const metadata: Metadata = {
-  title: 'Termine',
-  description: 'Alle Kurstermine der Bad Dog Hundeschule in 5330 Zurzach. Hundeschule, Einzeltraining, Social Walks und Mantrailing.',
-}
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import Link from 'next/link'
 
 type Termin = {
   id: string
@@ -21,7 +18,7 @@ type Termin = {
   level: string
 }
 
-const typConfig: Record<Termin['typ'], { farbe: string; icon: string }> = {
+const typConfig: Record<string, { farbe: string; icon: string }> = {
   Hundeschule:    { farbe: 'bg-rust/20 text-rust border-rust/30',                       icon: '🐕' },
   Einzeltraining: { farbe: 'bg-amber-900/20 text-amber-400 border-amber-700/30',        icon: '🎯' },
   'Social Walk':  { farbe: 'bg-emerald-900/20 text-emerald-400 border-emerald-700/30',  icon: '🌿' },
@@ -35,7 +32,7 @@ function Auslastung({ belegt, plaetze }: { belegt: number; plaetze: number }) {
   return (
     <div className="flex items-center gap-2">
       <div className="flex gap-0.5">
-        {Array.from({ length: plaetze }).map((_, i) => (
+        {Array.from({ length: Math.min(plaetze, 10) }).map((_, i) => (
           <div key={i} className={`w-2 h-2 rounded-sm ${i < belegt ? 'bg-rust' : 'bg-cream/10'}`} />
         ))}
       </div>
@@ -59,21 +56,23 @@ function getMonat(datum: string) {
   return `${monate[d.getMonth()]} ${d.getFullYear()}`
 }
 
-export default async function TerminePage() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+export default function TerminePage() {
+  const [termine, setTermine] = useState<Termin[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const { data } = await supabase
-    .from('termine')
-    .select('*')
-    .gte('datum', new Date().toISOString().split('T')[0])
-    .order('datum', { ascending: true })
+  useEffect(() => {
+    const heute = new Date().toISOString().split('T')[0]
+    supabase
+      .from('termine')
+      .select('*')
+      .gte('datum', heute)
+      .order('datum', { ascending: true })
+      .then(({ data }) => {
+        setTermine(data ?? [])
+        setLoading(false)
+      })
+  }, [])
 
-  const termine: Termin[] = data ?? []
-
-  // Nach Monat gruppieren
   const monateMap = new Map<string, Termin[]>()
   for (const t of termine) {
     const monat = getMonat(t.datum)
@@ -83,7 +82,6 @@ export default async function TerminePage() {
 
   return (
     <>
-      {/* Header */}
       <section className="pt-32 pb-16 max-w-7xl mx-auto px-6">
         <p className="section-label mb-3">Kurskalender</p>
         <div className="divider mb-6" />
@@ -94,7 +92,7 @@ export default async function TerminePage() {
           Alle verfügbaren Kurstermine auf einen Blick. Plätze sind begrenzt — frühzeitig anmelden lohnt sich.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          {(Object.entries(typConfig) as [Termin['typ'], { farbe: string; icon: string }][]).map(([typ, cfg]) => (
+          {Object.entries(typConfig).map(([typ, cfg]) => (
             <span key={typ} className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs border rounded-sm ${cfg.farbe}`}>
               {cfg.icon} {typ}
             </span>
@@ -102,9 +100,12 @@ export default async function TerminePage() {
         </div>
       </section>
 
-      {/* Termine */}
       <section className="max-w-7xl mx-auto px-6 pb-24 space-y-16">
-        {termine.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <p className="text-muted">Lade...</p>
+          </div>
+        ) : termine.length === 0 ? (
           <div className="bg-card border border-border p-12 text-center">
             <p className="text-muted">Aktuell keine Termine geplant. Meld dich bei Marcus für individuelle Termine.</p>
           </div>
