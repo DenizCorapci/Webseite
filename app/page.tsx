@@ -118,6 +118,9 @@ export default function HomePage() {
               BAD<br />
               <span className="text-gradient">DOG</span>
             </h1>
+            <p className="mt-3 inline-block bg-rust/20 border border-rust/40 text-rust text-xs font-semibold tracking-widest uppercase px-3 py-1">
+              ⚠ Testseite — nicht öffentlich
+            </p>
             <p className="mt-6 text-cream/60 text-lg leading-relaxed max-w-md animate-fade-up-delay-2">
               Hundeschule, Einzeltraining, Social Walks und Mantrailing —
               mit Trainer Marcus in Zurzach.
