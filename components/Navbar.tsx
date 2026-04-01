@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { useUser, SignOutButton } from '@clerk/nextjs'
 
 const links = [
   { href: '/kurse',      label: 'Kurse' },
@@ -15,6 +16,7 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const { user, isSignedIn } = useUser()
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-ink/90 backdrop-blur-sm border-b border-border">
@@ -47,6 +49,20 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
+          {isSignedIn ? (
+            <div className="flex items-center gap-3">
+              <Link href="/portal" className="font-body text-sm font-medium text-cream/70 hover:text-cream tracking-wide transition-colors">
+                Mein Portal
+              </Link>
+              <SignOutButton>
+                <button className="btn-outline text-xs py-2.5 px-5">Abmelden</button>
+              </SignOutButton>
+            </div>
+          ) : (
+            <Link href="/sign-in" className="btn-outline text-xs py-2.5 px-5">
+              Anmelden
+            </Link>
+          )}
           <Link href="/buchen" className="btn-primary text-xs py-2.5 px-5">
             Jetzt buchen
           </Link>
@@ -77,6 +93,20 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
+          {isSignedIn ? (
+            <>
+              <Link href="/portal" className="font-body text-base font-medium text-cream/80 hover:text-cream" onClick={() => setOpen(false)}>
+                Mein Portal
+              </Link>
+              <SignOutButton>
+                <button className="btn-outline justify-center">Abmelden</button>
+              </SignOutButton>
+            </>
+          ) : (
+            <Link href="/sign-in" className="btn-outline justify-center" onClick={() => setOpen(false)}>
+              Anmelden
+            </Link>
+          )}
           <Link href="/buchen" className="btn-primary justify-center mt-2" onClick={() => setOpen(false)}>
             Jetzt buchen
           </Link>
