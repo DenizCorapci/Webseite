@@ -89,7 +89,7 @@ export default function LernvideosPage() {
             LERN<br /><span className="text-rust">VIDEOS</span>
           </h1>
           <p className="mt-6 text-cream/60 text-lg max-w-xl">
-            Trainingstipps und Übungsanleitungen von Marcus — direkt aus dem Trainingsalltag.
+            Kein Fachjargon, keine Theorie um der Theorie willen. Marcus zeigt, wie Training im echten Alltag funktioniert — mit echten Hunden, echten Problemen, echten Lösungen.
           </p>
         </div>
       </section>
@@ -119,9 +119,6 @@ export default function LernvideosPage() {
                   <p className="text-xs text-rust mt-1">
                     {videosByKategorie.get(kat.key)!.length} Video{videosByKategorie.get(kat.key)!.length !== 1 ? 's' : ''}
                   </p>
-                )}
-                {!hatVideos && !loading && (
-                  <p className="text-xs text-muted mt-1">Demnächst</p>
                 )}
               </a>
             )
