@@ -31,8 +31,8 @@ export default function ThemeToggle() {
       title={light ? 'Dunkelmodus' : 'Hellmodus'}
       style={{
         background: 'none',
-        border: '1px solid var(--color-border)',
-        color: 'var(--color-muted)',
+        border: '1px solid rgb(var(--color-border))',
+        color: 'rgb(var(--color-muted))',
         cursor: 'pointer',
         padding: '6px 10px',
         fontSize: '1rem',
@@ -45,8 +45,8 @@ export default function ThemeToggle() {
         ;(e.currentTarget as HTMLButtonElement).style.color = '#C4551C'
       }}
       onMouseLeave={e => {
-        (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-border)'
-        ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-muted)'
+        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgb(var(--color-border))'
+        ;(e.currentTarget as HTMLButtonElement).style.color = 'rgb(var(--color-muted))'
       }}
     >
       {light ? '🌙' : '☀️'}
