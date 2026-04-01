@@ -428,7 +428,7 @@ export default function HomePage() {
       <section className="bg-surface border-y border-border">
         <div className="max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <p className="section-label mb-2">Demnächst</p>
+            <p className="section-label mb-2">Videobibliothek</p>
             <h2 className="font-display tracking-wider text-cream"
               style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
               LERNVIDEOS
