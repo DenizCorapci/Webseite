@@ -168,7 +168,7 @@ export default function HomePage() {
 
               {/* Badge */}
               <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-rust text-cream px-5 py-2 whitespace-nowrap">
-                <p className="font-display text-sm tracking-widest">K9 COUNTY JAIL</p>
+                <p className="font-display text-sm tracking-widest">PINO DAS KROKODIL</p>
               </div>
             </div>
           </div>
