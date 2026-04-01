@@ -73,6 +73,16 @@ export default function ChatPage() {
         }),
       })
 
+      if (!res.ok) {
+        const errText = await res.text()
+        setMessages(prev => [
+          ...prev.slice(0, -1),
+          { role: 'assistant', content: `Fehler: ${errText}` },
+        ])
+        setLoading(false)
+        return
+      }
+
       const reader = res.body!.getReader()
       const decoder = new TextDecoder()
       let full = ''
@@ -86,10 +96,11 @@ export default function ChatPage() {
           { role: 'assistant', content: full },
         ])
       }
-    } catch {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Unbekannter Fehler'
       setMessages(prev => [
         ...prev.slice(0, -1),
-        { role: 'assistant', content: 'Es ist ein Fehler aufgetreten. Bitte versuche es erneut.' },
+        { role: 'assistant', content: `Fehler: ${msg}` },
       ])
     }
 

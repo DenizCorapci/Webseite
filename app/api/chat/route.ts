@@ -12,6 +12,10 @@ const supabase = createClient(
 )
 
 export async function POST(req: NextRequest) {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return new Response(JSON.stringify({ error: 'ANTHROPIC_API_KEY nicht gesetzt' }), { status: 500 })
+  }
+
   const { messages, hundId } = await req.json()
 
   // Hundeprofil laden
@@ -58,13 +62,20 @@ Wenn du dir bei etwas nicht sicher bist, empfehle dem Kunden, direkt mit Marcus 
 
 ${kontext ? `--- Hundeprofil und aktueller Verhaltensbericht ---\n${kontext}---` : 'Noch kein Hundeprofil vorhanden.'}`
 
-  const stream = await anthropic.messages.create({
+  let stream
+  try {
+    stream = await anthropic.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
     system: systemPrompt,
     messages: messages,
     stream: true,
   })
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('Anthropic error:', msg)
+    return new Response(msg, { status: 500 })
+  }
 
   const encoder = new TextEncoder()
   const readable = new ReadableStream({
