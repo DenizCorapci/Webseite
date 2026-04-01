@@ -48,8 +48,6 @@ export default function MedienGalerie({ medien }: { medien: Medium[] }) {
                 alt={m.beschriftung || ''}
                 style={{
                   width: '100%',
-                  aspectRatio: '1 / 1',
-                  objectFit: 'cover',
                   display: 'block',
                   transition: 'transform 0.4s ease',
                   willChange: 'transform',
