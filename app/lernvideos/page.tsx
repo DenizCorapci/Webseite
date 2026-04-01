@@ -14,6 +14,15 @@ type Video = {
   reihenfolge: number
 }
 
+const kategorien = [
+  { key: 'Grundlagen',       icon: '🐾', title: 'Grundkommandos',    desc: 'Sitz, Platz, Bleib — die Basis richtig aufbauen.' },
+  { key: 'Leinenführigkeit', icon: '🦮', title: 'Leinenführigkeit',   desc: 'Entspannt laufen ohne Zug und Stress.' },
+  { key: 'Mantrailing',      icon: '👃', title: 'Mantrailing',        desc: 'Erste Schritte in der Nasenarbeit.' },
+  { key: 'Sozialverhalten',  icon: '🌿', title: 'Sozialverhalten',    desc: 'Begegnungen mit Hunden und Menschen meistern.' },
+  { key: 'Impulskontrolle',  icon: '🎯', title: 'Impulskontrolle',    desc: 'Der Hund lernt, innezuhalten.' },
+  { key: 'Allgemein',        icon: '🏡', title: 'Allgemein',          desc: 'Weitere Tipps und Übungen.' },
+]
+
 function VideoEmbed({ url }: { url: string }) {
   const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
   if (ytMatch) {
@@ -48,15 +57,6 @@ function VideoEmbed({ url }: { url: string }) {
   )
 }
 
-const planned = [
-  { icon: '🐾', title: 'Grundkommandos', desc: 'Sitz, Platz, Bleib — die Basis richtig aufbauen.' },
-  { icon: '🦮', title: 'Leinenführigkeit', desc: 'Entspannt laufen ohne Zug und Stress.' },
-  { icon: '👃', title: 'Mantrailing Basics', desc: 'Erste Schritte in der Nasenarbeit.' },
-  { icon: '🌿', title: 'Sozialverhalten', desc: 'Begegnungen mit Hunden und Menschen meistern.' },
-  { icon: '🎯', title: 'Impulskontrolle', desc: 'Der Hund lernt, innezuhalten.' },
-  { icon: '🏡', title: 'Zuhause-Training', desc: 'Übungen für drin und draussen.' },
-]
-
 export default function LernvideosPage() {
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
@@ -72,36 +72,71 @@ export default function LernvideosPage() {
       })
   }, [])
 
-  const kategorienMap = new Map<string, Video[]>()
+  const videosByKategorie = new Map<string, Video[]>()
   for (const v of videos) {
-    if (!kategorienMap.has(v.kategorie)) kategorienMap.set(v.kategorie, [])
-    kategorienMap.get(v.kategorie)!.push(v)
+    if (!videosByKategorie.has(v.kategorie)) videosByKategorie.set(v.kategorie, [])
+    videosByKategorie.get(v.kategorie)!.push(v)
   }
 
   return (
     <>
+      {/* Header */}
       <section className="pt-32 pb-16 bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-6">
-          <p className="section-label mb-3">{!loading && videos.length > 0 ? 'Trainingstipps' : 'Demnächst'}</p>
+          <p className="section-label mb-3">Trainingstipps</p>
           <div className="divider mb-6" />
           <h1 className="font-display text-7xl sm:text-8xl tracking-wider text-cream">
             LERN<br /><span className="text-rust">VIDEOS</span>
           </h1>
           <p className="mt-6 text-cream/60 text-lg max-w-xl">
-            {!loading && videos.length > 0
-              ? 'Trainingstipps, Übungsanleitungen und ehrliche Einblicke aus dem Trainingsalltag von Marcus.'
-              : 'Marcus bereitet eine Videobibliothek vor — Trainingstipps, Übungsanleitungen und ehrliche Einblicke aus dem Trainingsalltag.'}
+            Trainingstipps und Übungsanleitungen von Marcus — direkt aus dem Trainingsalltag.
           </p>
         </div>
       </section>
 
+      {/* Kategorie-Karten */}
+      <section className="max-w-7xl mx-auto px-6 py-12">
+        <p className="section-label mb-4">Themen</p>
+        <div className="divider mb-8" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {kategorien.map((kat) => {
+            const hatVideos = !loading && (videosByKategorie.get(kat.key)?.length ?? 0) > 0
+            return (
+              <a
+                key={kat.key}
+                href={hatVideos ? `#${kat.key}` : undefined}
+                className={`block bg-card border p-5 text-center transition-colors ${
+                  hatVideos
+                    ? 'border-rust/30 hover:border-rust cursor-pointer'
+                    : 'border-border opacity-50 cursor-default'
+                }`}
+              >
+                <span className="text-3xl block mb-3">{kat.icon}</span>
+                <h3 className="font-display text-sm tracking-wider text-cream leading-tight">
+                  {kat.title.toUpperCase()}
+                </h3>
+                {hatVideos && (
+                  <p className="text-xs text-rust mt-1">
+                    {videosByKategorie.get(kat.key)!.length} Video{videosByKategorie.get(kat.key)!.length !== 1 ? 's' : ''}
+                  </p>
+                )}
+                {!hatVideos && !loading && (
+                  <p className="text-xs text-muted mt-1">Demnächst</p>
+                )}
+              </a>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* Videos */}
       {loading ? (
-        <div className="flex items-center justify-center py-32">
+        <div className="flex items-center justify-center py-16">
           <p className="text-muted">Lade...</p>
         </div>
       ) : videos.length === 0 ? (
-        <section className="max-w-7xl mx-auto px-6 py-20">
-          <div className="bg-card border border-rust/30 p-12 text-center mb-16 relative overflow-hidden">
+        <section className="max-w-7xl mx-auto px-6 pb-24">
+          <div className="bg-card border border-rust/30 p-12 text-center relative overflow-hidden">
             <div className="font-display text-[15vw] text-rust/5 absolute inset-0 flex items-center justify-center leading-none pointer-events-none select-none">SOON</div>
             <div className="relative z-10">
               <div className="text-5xl mb-4">🎬</div>
@@ -112,39 +147,33 @@ export default function LernvideosPage() {
               <Link href="/kontakt" className="btn-primary">Informiert werden</Link>
             </div>
           </div>
-          <div>
-            <p className="section-label mb-4">Geplante Themen</p>
-            <div className="divider mb-8" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {planned.map((item) => (
-                <div key={item.title} className="bg-card border border-border p-6 opacity-60">
-                  <span className="text-3xl mb-3 block">{item.icon}</span>
-                  <h3 className="font-display text-2xl tracking-wider text-cream mb-2">{item.title.toUpperCase()}</h3>
-                  <p className="text-muted text-sm">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </section>
       ) : (
-        <section className="max-w-7xl mx-auto px-6 py-16 space-y-16">
-          {Array.from(kategorienMap.entries()).map(([kategorie, vids]) => (
-            <div key={kategorie}>
-              <p className="section-label mb-2">{kategorie}</p>
-              <div className="divider mb-8" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {vids.map((v) => (
-                  <div key={v.id} className="bg-card border border-border overflow-hidden">
-                    <VideoEmbed url={v.video_url} />
-                    <div className="p-5">
-                      <h3 className="font-display text-2xl tracking-wider text-cream mb-2">{v.titel.toUpperCase()}</h3>
-                      <p className="text-muted text-sm leading-relaxed">{v.beschreibung}</p>
+        <section className="max-w-7xl mx-auto px-6 pb-24 space-y-16">
+          {kategorien
+            .filter((kat) => (videosByKategorie.get(kat.key)?.length ?? 0) > 0)
+            .map((kat) => (
+              <div key={kat.key} id={kat.key}>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">{kat.icon}</span>
+                  <p className="section-label">{kat.title}</p>
+                </div>
+                <div className="divider mb-8" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {videosByKategorie.get(kat.key)!.map((v) => (
+                    <div key={v.id} className="bg-card border border-border overflow-hidden">
+                      <VideoEmbed url={v.video_url} />
+                      <div className="p-5">
+                        <h3 className="font-display text-2xl tracking-wider text-cream mb-2">
+                          {v.titel.toUpperCase()}
+                        </h3>
+                        <p className="text-muted text-sm leading-relaxed">{v.beschreibung}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </section>
       )}
     </>
