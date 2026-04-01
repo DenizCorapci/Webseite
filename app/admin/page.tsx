@@ -71,15 +71,26 @@ export default function AdminPage() {
 
       {/* Schnellzugriff */}
       <div className="mb-10">
-        <Link href="/admin/termine" className="block bg-card border border-border hover:border-rust/50 transition-colors p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="section-label mb-1">Kurskalender</p>
-              <h3 className="font-display text-2xl tracking-wider text-cream">TERMINE VERWALTEN</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <Link href="/admin/termine" className="block bg-card border border-border hover:border-rust/50 transition-colors p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="section-label mb-1">Kurskalender</p>
+                <h3 className="font-display text-2xl tracking-wider text-cream">TERMINE</h3>
+              </div>
+              <span className="text-rust text-xl">→</span>
             </div>
-            <span className="text-rust text-xl">→</span>
-          </div>
-        </Link>
+          </Link>
+          <Link href="/admin/stories" className="block bg-card border border-border hover:border-rust/50 transition-colors p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="section-label mb-1">Vorher & Nachher</p>
+                <h3 className="font-display text-2xl tracking-wider text-cream">STORIES</h3>
+              </div>
+              <span className="text-rust text-xl">→</span>
+            </div>
+          </Link>
+        </div>
       </div>
 
       {/* Hundeliste */}
