@@ -8,7 +8,7 @@ type Hund = {
   id: string
   name: string
   rasse: string
-  alter: string
+  hund_alter: string
   besitzer_name: string
   besitzer_email: string
   bericht_anzahl: number
@@ -22,7 +22,7 @@ export default function AdminPage() {
     async function load() {
       const { data } = await supabase
         .from('hunde')
-        .select('id, name, rasse, alter, besitzer_name, besitzer_email')
+        .select('id, name, rasse, hund_alter, besitzer_name, besitzer_email')
         .order('name')
 
       if (data) {
@@ -80,7 +80,7 @@ export default function AdminPage() {
             <div key={h.id} className="bg-card border border-border p-6 flex items-center justify-between gap-4">
               <div>
                 <h3 className="font-display text-2xl tracking-wider text-cream">{h.name.toUpperCase()}</h3>
-                <p className="text-muted text-sm">{h.rasse} · {h.alter}</p>
+                <p className="text-muted text-sm">{h.rasse} · {h.hund_alter}</p>
                 <p className="text-muted text-xs mt-0.5">{h.besitzer_name} · {h.besitzer_email}</p>
               </div>
               <div className="flex items-center gap-3">

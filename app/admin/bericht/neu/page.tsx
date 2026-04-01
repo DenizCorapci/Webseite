@@ -18,7 +18,7 @@ function NeuerBerichtForm() {
     phase: 'Phase 1: Grundlagen',
     zusammenfassung: '',
     anamnese: '',
-    analyse: '',
+    verhaltensanalyse: '',
     therapieplan: '',
     naechste_schritte: '',
   })
@@ -77,7 +77,7 @@ function NeuerBerichtForm() {
 
   const felder = [
     { label: 'Anamnese', key: 'anamnese', placeholder: 'Stammdaten, Gesundheit, Alltag, bisheriges Training...' },
-    { label: 'Verhaltensanalyse', key: 'analyse', placeholder: 'Hauptproblem, Stressfaktoren, Ursachen...' },
+    { label: 'Verhaltensanalyse', key: 'verhaltensanalyse', placeholder: 'Hauptproblem, Stressfaktoren, Ursachen...' },
     { label: 'Therapieplan', key: 'therapieplan', placeholder: 'Massnahmen, Übungen, Schritte...' },
     { label: 'Nächste Schritte', key: 'naechste_schritte', placeholder: 'Was soll der Kunde bis zum nächsten Termin üben?' },
   ]

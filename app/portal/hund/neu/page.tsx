@@ -12,7 +12,7 @@ export default function NeuesHundprofilPage() {
   const [form, setForm] = useState({
     name: '',
     rasse: '',
-    alter: '',
+    hund_alter: '',
     geschlecht: 'Rüde',
     kastration: 'intakt',
     besonderheiten: '',
@@ -45,7 +45,7 @@ export default function NeuesHundprofilPage() {
         {[
           { label: 'Name des Hundes', key: 'name', placeholder: 'z.B. Bruno' },
           { label: 'Rasse', key: 'rasse', placeholder: 'z.B. Deutscher Schäferhund' },
-          { label: 'Alter', key: 'alter', placeholder: 'z.B. 2 Jahre' },
+          { label: 'Alter', key: 'hund_alter', placeholder: 'z.B. 2 Jahre' },
         ].map(({ label, key, placeholder }) => (
           <div key={key}>
             <label className="block text-xs font-semibold tracking-widest uppercase text-cream/60 mb-2">{label}</label>

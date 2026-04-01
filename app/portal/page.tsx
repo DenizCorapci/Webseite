@@ -9,7 +9,7 @@ type Hund = {
   id: string
   name: string
   rasse: string
-  alter: string
+  hund_alter: string
   geschlecht: string
   foto_url: string | null
 }
@@ -93,7 +93,7 @@ export default function PortalPage() {
             <div className="flex-1">
               <p className="section-label mb-1">Mein Hund</p>
               <h2 className="font-display text-4xl tracking-wider text-cream">{hund.name.toUpperCase()}</h2>
-              <p className="text-muted text-sm">{hund.rasse} · {hund.alter} · {hund.geschlecht}</p>
+              <p className="text-muted text-sm">{hund.rasse} · {hund.hund_alter} · {hund.geschlecht}</p>
             </div>
             <Link href="/portal/hund/bearbeiten" className="btn-outline text-xs py-2 px-4">
               Bearbeiten

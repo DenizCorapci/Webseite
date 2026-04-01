@@ -12,7 +12,7 @@ type Bericht = {
   phase: string
   zusammenfassung: string
   anamnese: string
-  analyse: string
+  verhaltensanalyse: string
   therapieplan: string
   naechste_schritte: string
   medien: { url: string; typ: 'foto' | 'video'; beschriftung: string }[]
@@ -43,7 +43,7 @@ export default function BerichtDetailPage({ params }: { params: Promise<{ id: st
 
   const abschnitte = [
     { label: 'Anamnese', inhalt: bericht.anamnese },
-    { label: 'Verhaltensanalyse', inhalt: bericht.analyse },
+    { label: 'Verhaltensanalyse', inhalt: bericht.verhaltensanalyse },
     { label: 'Therapieplan', inhalt: bericht.therapieplan },
     { label: 'Nächste Schritte', inhalt: bericht.naechste_schritte },
   ]
