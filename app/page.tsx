@@ -1,36 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+// Pexels Dobermann photos (free, reliable CDN)
 const DOBERMANN_IMAGES = [
-  {
-    id: 'Glz3qayP5us',
-    alt: 'Dobermann Nahaufnahme — intensiver Blick',
-    aspect: 'portrait',
-  },
-  {
-    id: 'Fbi3FyJ2Sn0',
-    alt: 'Dobermann am Strand — athletisch',
-    aspect: 'portrait',
-  },
-  {
-    id: 'xhvNYC3lr9s',
-    alt: 'Dobermann Ganzaufnahme — elegant',
-    aspect: 'landscape',
-  },
-  {
-    id: 'rvvfkCbXzxI',
-    alt: 'Dobermann Welpe — junges Potenzial',
-    aspect: 'portrait',
-  },
-  {
-    id: 'CvZr-KELh2c',
-    alt: 'Dobermann Rostbraun — Porträt',
-    aspect: 'portrait',
-  },
+  { id: '1719626', alt: 'Dobermann schwarz-braun — Fokus' },
+  { id: '7384943', alt: 'Dobermann Nahaufnahme — intensiver Blick' },
+  { id: '30384004', alt: 'Dobermann auf Gras — elegant' },
+  { id: '7483192', alt: 'Dobermann im Schnee' },
+  { id: '11497215', alt: 'Dobermann sitzend auf Gras' },
 ]
 
-function unsplashUrl(id: string, w = 800, h = 1000) {
-  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=80`
+function pexelsUrl(id: string, w = 800) {
+  return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`
 }
 
 const courses = [
@@ -272,7 +253,7 @@ export default function HomePage() {
           {/* Large left image */}
           <div className="col-span-2 row-span-2 relative overflow-hidden group border border-border">
             <Image
-              src={unsplashUrl(DOBERMANN_IMAGES[0].id, 800, 900)}
+              src={pexelsUrl(DOBERMANN_IMAGES[0].id, 800)}
               alt={DOBERMANN_IMAGES[0].alt}
               fill
               className="object-cover img-zoom"
@@ -286,7 +267,7 @@ export default function HomePage() {
           {/* Top right */}
           <div className="relative overflow-hidden group border border-border">
             <Image
-              src={unsplashUrl(DOBERMANN_IMAGES[1].id, 600, 400)}
+              src={pexelsUrl(DOBERMANN_IMAGES[1].id, 600)}
               alt={DOBERMANN_IMAGES[1].alt}
               fill
               className="object-cover img-zoom"
@@ -297,7 +278,7 @@ export default function HomePage() {
           {/* Top right 2 */}
           <div className="relative overflow-hidden group border border-border">
             <Image
-              src={unsplashUrl(DOBERMANN_IMAGES[4].id, 600, 400)}
+              src={pexelsUrl(DOBERMANN_IMAGES[4].id, 600)}
               alt={DOBERMANN_IMAGES[4].alt}
               fill
               className="object-cover img-zoom"
@@ -308,7 +289,7 @@ export default function HomePage() {
           {/* Bottom right */}
           <div className="relative overflow-hidden group border border-border">
             <Image
-              src={unsplashUrl(DOBERMANN_IMAGES[3].id, 600, 400)}
+              src={pexelsUrl(DOBERMANN_IMAGES[3].id, 600)}
               alt={DOBERMANN_IMAGES[3].alt}
               fill
               className="object-cover img-zoom"
@@ -319,7 +300,7 @@ export default function HomePage() {
           {/* Bottom right 2 */}
           <div className="relative overflow-hidden group border border-border">
             <Image
-              src={unsplashUrl(DOBERMANN_IMAGES[2].id, 600, 400)}
+              src={pexelsUrl(DOBERMANN_IMAGES[2].id, 600)}
               alt={DOBERMANN_IMAGES[2].alt}
               fill
               className="object-cover img-zoom"
@@ -464,7 +445,7 @@ export default function HomePage() {
         {/* Background: large Dobermann silhouette */}
         <div className="absolute inset-0">
           <Image
-            src={unsplashUrl(DOBERMANN_IMAGES[0].id, 1600, 800)}
+            src={pexelsUrl(DOBERMANN_IMAGES[0].id, 1600)}
             alt=""
             fill
             className="object-cover object-center opacity-10"
