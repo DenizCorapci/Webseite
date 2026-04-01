@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import MedienGalerie from '@/components/Lightbox'
 
 type Bericht = {
   id: string
@@ -196,20 +197,7 @@ export default function AdminBerichtDetailPage({ params }: { params: { id: strin
         {bericht.medien.length > 0 && (
           <div>
             <h3 className="font-display text-2xl tracking-wider text-cream mb-4">FOTOS & VIDEOS</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {bericht.medien.map((m, i) => (
-                <div key={i} className="bg-card border border-border overflow-hidden">
-                  {m.typ === 'foto' ? (
-                    <img src={m.url} alt={m.beschriftung} className="w-full aspect-square object-cover" />
-                  ) : (
-                    <video src={m.url} controls className="w-full aspect-video" />
-                  )}
-                  {m.beschriftung && (
-                    <p className="text-xs text-muted px-3 py-2">{m.beschriftung}</p>
-                  )}
-                </div>
-              ))}
-            </div>
+            <MedienGalerie medien={bericht.medien} />
           </div>
         )}
 
