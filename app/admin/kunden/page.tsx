@@ -140,7 +140,7 @@ export default function AdminKundenPage() {
       <Link href="/admin" className="text-xs text-muted hover:text-rust transition-colors mb-8 inline-block">← Zurück zum Dashboard</Link>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <h1 className="font-display text-5xl tracking-wider text-cream">KUNDEN</h1>
+        <h1 className="font-display text-5xl tracking-wider text-cream">KUNDENDATEN</h1>
         <div className="flex gap-2 flex-wrap">
           {selected.size > 0 && (
             <button onClick={handleDelete} className="text-xs border border-red-800/50 text-red-400 hover:border-red-600 px-4 py-2 transition-colors">
