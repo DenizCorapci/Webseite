@@ -23,21 +23,28 @@ type Bericht = {
   zusammenfassung: string
 }
 
+type Profil = {
+  vorname: string
+  nachname: string
+}
+
 export default function PortalPage() {
   const { user } = useUser()
   const [hund, setHund] = useState<Hund | null>(null)
   const [berichte, setBerichte] = useState<Bericht[]>([])
+  const [profil, setProfil] = useState<Profil | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!user) return
     async function load() {
-      const { data: hundData } = await supabase
-        .from('hunde')
-        .select('*')
-        .eq('clerk_user_id', user!.id)
-        .single()
+      const [{ data: hundData }, { data: profilData }] = await Promise.all([
+        supabase.from('hunde').select('*').eq('clerk_user_id', user!.id).single(),
+        supabase.from('kunden_profile').select('vorname, nachname').eq('clerk_user_id', user!.id).single(),
+      ])
+
       setHund(hundData)
+      setProfil(profilData)
 
       if (hundData) {
         const { data: berichteData } = await supabase
@@ -60,18 +67,25 @@ export default function PortalPage() {
     )
   }
 
+  // Vorname: aus Profil, sonst Clerk
+  const vorname = profil?.vorname || user?.firstName || 'WILLKOMMEN'
+
   return (
     <div className="min-h-screen pt-32 pb-24 max-w-4xl mx-auto px-6">
-      <div className="mb-10">
-        <p className="section-label mb-2">Kundenportal</p>
-        <div className="divider mb-4" />
-        <h1 className="font-display text-6xl tracking-wider text-cream">
-          HALLO, {user?.firstName?.toUpperCase() ?? 'WILLKOMMEN'}
-        </h1>
+      <div className="mb-10 flex items-start justify-between gap-4">
+        <div>
+          <p className="section-label mb-2">Kundenportal</p>
+          <div className="divider mb-4" />
+          <h1 className="font-display text-6xl tracking-wider text-cream">
+            HALLO, {vorname.toUpperCase()}
+          </h1>
+        </div>
+        <Link href="/portal/profil" className="btn-outline text-xs py-2 px-4 flex-shrink-0 mt-8">
+          Mein Profil
+        </Link>
       </div>
 
       {!hund ? (
-        /* Noch kein Hundeprofil */
         <div className="bg-card border border-border p-8 text-center">
           <p className="text-4xl mb-4">🐕</p>
           <h2 className="font-display text-3xl tracking-wider text-cream mb-2">NOCH KEIN PROFIL</h2>
