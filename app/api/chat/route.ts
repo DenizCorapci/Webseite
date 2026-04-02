@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
+import { auth } from '@clerk/nextjs/server'
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -16,22 +17,31 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify({ error: 'ANTHROPIC_API_KEY nicht gesetzt' }), { status: 500 })
   }
 
+  // Clerk-Auth prüfen
+  const { userId } = await auth()
+  if (!userId) {
+    return new Response(JSON.stringify({ error: 'Nicht eingeloggt' }), { status: 401 })
+  }
+
   const { messages, hundId } = await req.json()
 
-  // Hundeprofil laden
+  // Sicherstellen dass die hundId dem eingeloggten User gehört
   let kontext = ''
   if (hundId) {
     const { data: hund } = await supabase
       .from('hunde')
-      .select('name, rasse, hund_alter, geschlecht, kastration, besonderheiten')
+      .select('name, rasse, hund_alter, geschlecht, kastration, besonderheiten, clerk_user_id')
       .eq('id', hundId)
       .single()
 
-    if (hund) {
-      kontext += `Hund: ${hund.name}, ${hund.rasse}, ${hund.hund_alter}, ${hund.geschlecht}, ${hund.kastration}`
-      if (hund.besonderheiten) kontext += `, Besonderheiten: ${hund.besonderheiten}`
-      kontext += '\n'
+    // Zugriff verweigern wenn der Hund einem anderen User gehört
+    if (!hund || hund.clerk_user_id !== userId) {
+      return new Response(JSON.stringify({ error: 'Kein Zugriff' }), { status: 403 })
     }
+
+    kontext += `Hund: ${hund.name}, ${hund.rasse}, ${hund.hund_alter}, ${hund.geschlecht}, ${hund.kastration}`
+    if (hund.besonderheiten) kontext += `, Besonderheiten: ${hund.besonderheiten}`
+    kontext += '\n'
 
     // Neusten Bericht laden
     const { data: bericht } = await supabase
@@ -65,12 +75,12 @@ ${kontext ? `--- Hundeprofil und aktueller Verhaltensbericht ---\n${kontext}---`
   let stream
   try {
     stream = await anthropic.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 1024,
-    system: systemPrompt,
-    messages: messages,
-    stream: true,
-  })
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: messages,
+      stream: true,
+    })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error('Anthropic error:', msg)
