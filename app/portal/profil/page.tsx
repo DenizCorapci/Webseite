@@ -12,7 +12,6 @@ export default function ProfilPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState(false)
   const [form, setForm] = useState({
     vorname: '',
     nachname: '',
@@ -60,8 +59,7 @@ export default function ProfilPage() {
       .from('kunden_profile')
       .upsert({ clerk_user_id: user.id, ...form }, { onConflict: 'clerk_user_id' })
     setSaving(false)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+    router.push('/portal')
   }
 
   if (loading) return (
@@ -87,9 +85,12 @@ export default function ProfilPage() {
 
       <p className="section-label mb-2">Mein Profil</p>
       <div className="divider mb-6" />
-      <h1 className="font-display text-5xl tracking-wider text-cream mb-8">
+      <h1 className="font-display text-5xl tracking-wider text-cream mb-3">
         MEINE DATEN
       </h1>
+      <p className="text-muted text-sm mb-8">
+        Bitte erfasse zuerst deine Kontaktdaten. Danach kannst du das Profil deines Hundes anlegen.
+      </p>
 
       <form onSubmit={handleSave} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -122,7 +123,7 @@ export default function ProfilPage() {
             disabled={saving}
             className="btn-primary flex-1 justify-center"
           >
-            {saving ? 'Speichern...' : saved ? 'Gespeichert ✓' : 'Speichern →'}
+            {saving ? 'Speichern...' : 'Speichern →'}
           </button>
         </div>
       </form>

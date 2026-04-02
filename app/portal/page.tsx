@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 type Hund = {
   id: string
@@ -30,6 +31,7 @@ type Profil = {
 
 export default function PortalPage() {
   const { user } = useUser()
+  const router = useRouter()
   const [hund, setHund] = useState<Hund | null>(null)
   const [berichte, setBerichte] = useState<Bericht[]>([])
   const [profil, setProfil] = useState<Profil | null>(null)
@@ -43,8 +45,14 @@ export default function PortalPage() {
         supabase.from('kunden_profile').select('vorname, nachname').eq('clerk_user_id', user!.id).single(),
       ])
 
-      setHund(hundData)
+      // Kein Profil vorhanden → zuerst Profil erfassen
+      if (!profilData || !profilData.vorname) {
+        router.push('/portal/profil')
+        return
+      }
+
       setProfil(profilData)
+      setHund(hundData)
 
       if (hundData) {
         const { data: berichteData } = await supabase
@@ -57,7 +65,7 @@ export default function PortalPage() {
       setLoading(false)
     }
     load()
-  }, [user])
+  }, [user, router])
 
   if (loading) {
     return (
