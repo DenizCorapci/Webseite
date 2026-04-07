@@ -20,6 +20,23 @@ export default function ChatWidget() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const initialized = useRef(false)
+  const [emailSending, setEmailSending] = useState<number | null>(null)
+  const [emailSent, setEmailSent] = useState<number | null>(null)
+
+  async function sendEmail(inhalt: string, index: number) {
+    setEmailSending(index)
+    try {
+      await fetch('/api/email-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ antwort: inhalt }),
+      })
+      setEmailSent(index)
+      setTimeout(() => setEmailSent(null), 3000)
+    } finally {
+      setEmailSending(null)
+    }
+  }
 
   useEffect(() => {
     if (!user || initialized.current) return
@@ -146,17 +163,35 @@ export default function ChatWidget() {
                 {m.role === 'assistant' && (
                   <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: '2px' }}>🐾</span>
                 )}
-                <div style={{
-                  maxWidth: '85%',
-                  padding: '8px 12px',
-                  fontSize: '0.8rem',
-                  lineHeight: 1.5,
-                  whiteSpace: 'pre-line',
-                  backgroundColor: m.role === 'user' ? 'rgba(180,70,40,0.2)' : '#1A1A1A',
-                  border: m.role === 'user' ? '1px solid rgba(180,70,40,0.4)' : '1px solid #2A2A2A',
-                  color: m.role === 'user' ? '#F2EDE4' : '#C8C0B0',
-                }}>
-                  {m.content || (loading && i === messages.length - 1 ? '…' : '')}
+                <div style={{ maxWidth: '85%' }}>
+                  <div style={{
+                    padding: '8px 12px',
+                    fontSize: '0.8rem',
+                    lineHeight: 1.5,
+                    whiteSpace: 'pre-line',
+                    backgroundColor: m.role === 'user' ? 'rgba(180,70,40,0.2)' : '#1A1A1A',
+                    border: m.role === 'user' ? '1px solid rgba(180,70,40,0.4)' : '1px solid #2A2A2A',
+                    color: m.role === 'user' ? '#F2EDE4' : '#C8C0B0',
+                  }}>
+                    {m.content || (loading && i === messages.length - 1 ? '…' : '')}
+                  </div>
+                  {m.role === 'assistant' && m.content && !loading && (
+                    <button
+                      onClick={() => sendEmail(m.content, i)}
+                      disabled={emailSending === i}
+                      style={{
+                        marginTop: '4px',
+                        background: 'none',
+                        border: 'none',
+                        color: emailSent === i ? '#4CAF50' : '#888',
+                        fontSize: '0.7rem',
+                        cursor: 'pointer',
+                        padding: '2px 0',
+                      }}
+                    >
+                      {emailSent === i ? '✓ Gesendet' : emailSending === i ? '...' : '📧 Per Email senden'}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

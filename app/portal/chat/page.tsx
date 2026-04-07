@@ -21,6 +21,23 @@ export default function ChatPage() {
   const [loadingHund, setLoadingHund] = useState(true)
   const bottomRef = useRef<HTMLDivElement>(null)
   const initialized = useRef(false)
+  const [emailSending, setEmailSending] = useState<number | null>(null)
+  const [emailSent, setEmailSent] = useState<number | null>(null)
+
+  async function sendEmail(inhalt: string, index: number) {
+    setEmailSending(index)
+    try {
+      await fetch('/api/email-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ antwort: inhalt }),
+      })
+      setEmailSent(index)
+      setTimeout(() => setEmailSent(null), 3000)
+    } finally {
+      setEmailSending(null)
+    }
+  }
 
   useEffect(() => {
     if (!user || initialized.current) return
@@ -145,16 +162,27 @@ export default function ChatPage() {
                 <span className="text-sm">🐾</span>
               </div>
             )}
-            <div
-              className={`max-w-[80%] px-4 py-3 text-sm leading-relaxed whitespace-pre-line ${
-                m.role === 'user'
-                  ? 'bg-rust/20 border border-rust/40 text-cream'
-                  : 'bg-card border border-border text-cream/80'
-              }`}
-            >
-              {m.content || (loading && i === messages.length - 1 ? (
-                <span className="text-muted animate-pulse">…</span>
-              ) : '')}
+            <div className="max-w-[80%]">
+              <div
+                className={`px-4 py-3 text-sm leading-relaxed whitespace-pre-line ${
+                  m.role === 'user'
+                    ? 'bg-rust/20 border border-rust/40 text-cream'
+                    : 'bg-card border border-border text-cream/80'
+                }`}
+              >
+                {m.content || (loading && i === messages.length - 1 ? (
+                  <span className="text-muted animate-pulse">…</span>
+                ) : '')}
+              </div>
+              {m.role === 'assistant' && m.content && !loading && (
+                <button
+                  onClick={() => sendEmail(m.content, i)}
+                  disabled={emailSending === i}
+                  className="mt-1 text-xs text-muted hover:text-cream transition-colors"
+                >
+                  {emailSent === i ? '✓ Gesendet' : emailSending === i ? '...' : '📧 Per Email senden'}
+                </button>
+              )}
             </div>
           </div>
         ))}
