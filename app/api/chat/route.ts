@@ -35,7 +35,7 @@ async function sucheRelevantesWissen(frage: string): Promise<string> {
 
     const { data: chunks } = await supabaseAdmin.rpc('suche_pdf_chunks', {
       anfrage_embedding: embedding,
-      anzahl: 4,
+      anzahl: 8,
     })
 
     if (!chunks || chunks.length === 0) return ''
@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
 
 Du gibst den Kunden konkrete, praktische Tipps zum Hundetraining – immer basierend auf dem spezifischen Profil und Verhaltensbericht des Hundes.
 
-Antworte immer auf Deutsch (Schweizer Deutsch ist ok). Halte Antworten kurz und verständlich. Gib konkrete Übungen und Schritte, keine langen Erklärungen.
+Antworte immer auf Deutsch (Schweizer Deutsch ist ok). Gib vollständige, detaillierte Antworten – nutze alle relevanten Informationen aus den Unterlagen. Strukturiere die Antwort übersichtlich mit Schritten oder Abschnitten wenn sinnvoll.
 
 Wenn du dir bei etwas nicht sicher bist, empfehle dem Kunden, direkt mit Marcus Kontakt aufzunehmen.
 
@@ -131,7 +131,7 @@ Schreibe am Ende jeder Antwort eine neue Zeile mit der Quellenangabe:
   try {
     stream = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1024,
+      max_tokens: 3000,
       system: systemPrompt,
       messages: messages,
       stream: true,
