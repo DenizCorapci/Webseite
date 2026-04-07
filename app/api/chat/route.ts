@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { createClient } from '@supabase/supabase-js'
 import { auth } from '@clerk/nextjs/server'
 
@@ -7,10 +8,50 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+})
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
+
+// Service-Role-Client für Vektorsuche (umgeht RLS)
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+async function sucheRelevantesWissen(frage: string): Promise<string> {
+  if (!process.env.OPENAI_API_KEY) return ''
+
+  try {
+    const embeddingResponse = await openai.embeddings.create({
+      model: 'text-embedding-3-small',
+      input: frage,
+    })
+    const embedding = embeddingResponse.data[0].embedding
+
+    const { data: chunks } = await supabaseAdmin.rpc('suche_pdf_chunks', {
+      anfrage_embedding: embedding,
+      anzahl: 4,
+    })
+
+    if (!chunks || chunks.length === 0) return ''
+
+    const relevante = chunks
+      .filter((c: { aehnlichkeit: number }) => c.aehnlichkeit > 0.3)
+      .map((c: { inhalt: string; dateiname: string }) =>
+        `[${c.dateiname}]\n${c.inhalt}`
+      )
+      .join('\n\n---\n\n')
+
+    return relevante
+  } catch {
+    return ''
+  }
+}
 
 export async function POST(req: NextRequest) {
   if (!process.env.ANTHROPIC_API_KEY) {
@@ -24,6 +65,14 @@ export async function POST(req: NextRequest) {
   }
 
   const { messages, hundId } = await req.json()
+
+  // Letzte Nutzerfrage für Vektorsuche extrahieren
+  const letzteNachricht = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
+  const wissenskontext = letzteNachricht
+    ? await sucheRelevantesWissen(letzteNachricht.content)
+    : ''
+
+  console.log(`[RAG] Frage: "${letzteNachricht?.content?.slice(0, 60)}" → ${wissenskontext ? `${wissenskontext.length} Zeichen Kontext gefunden` : 'kein Kontext'}`)
 
   // Sicherstellen dass die hundId dem eingeloggten User gehört
   let kontext = ''
@@ -70,7 +119,13 @@ Antworte immer auf Deutsch (Schweizer Deutsch ist ok). Halte Antworten kurz und 
 
 Wenn du dir bei etwas nicht sicher bist, empfehle dem Kunden, direkt mit Marcus Kontakt aufzunehmen.
 
-${kontext ? `--- Hundeprofil und aktueller Verhaltensbericht ---\n${kontext}---` : 'Noch kein Hundeprofil vorhanden.'}`
+${kontext ? `--- Hundeprofil und aktueller Verhaltensbericht ---\n${kontext}---` : 'Noch kein Hundeprofil vorhanden.'}
+
+${wissenskontext ? `--- Relevantes Fachwissen aus unseren Unterlagen ---\n${wissenskontext}\n---\n\nNutze dieses Fachwissen wenn es zur Frage passt. Zitiere keine Dateinamen.` : ''}
+
+Schreibe am Ende jeder Antwort eine neue Zeile mit der Quellenangabe:
+- Wenn du das Fachwissen aus den Unterlagen verwendet hast: "📚 Quelle: Bad Dog Unterlagen"
+- Wenn du nur aus deinem allgemeinen Wissen geantwortet hast: "🧠 Quelle: Allgemeines Hundetraining-Wissen"`
 
   let stream
   try {

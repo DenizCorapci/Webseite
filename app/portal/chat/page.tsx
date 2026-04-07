@@ -20,9 +20,11 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false)
   const [loadingHund, setLoadingHund] = useState(true)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const initialized = useRef(false)
 
   useEffect(() => {
-    if (!user) return
+    if (!user || initialized.current) return
+    initialized.current = true
     supabase
       .from('hunde')
       .select('id, name')

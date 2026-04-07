@@ -19,9 +19,11 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const initialized = useRef(false)
 
   useEffect(() => {
-    if (!user) return
+    if (!user || initialized.current) return
+    initialized.current = true
     supabase
       .from('hunde')
       .select('id, name')
