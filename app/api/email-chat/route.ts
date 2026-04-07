@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
   }
 
   const { error } = await resend.emails.send({
-    from: 'Bad Dog Hundeschule <noreply@baddoghundeschule.ch>',
-    to: email,
+    from: 'Bad Dog Hundeschule <onboarding@resend.dev>',
+    to: process.env.RESEND_TEST_EMAIL || email,
     subject: 'Deine Antwort vom KI-Berater – Bad Dog Hundeschule',
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
