@@ -35,13 +35,13 @@ async function sucheRelevantesWissen(frage: string): Promise<string> {
 
     const { data: chunks } = await supabaseAdmin.rpc('suche_pdf_chunks', {
       anfrage_embedding: embedding,
-      anzahl: 8,
+      anzahl: 16,
     })
 
     if (!chunks || chunks.length === 0) return ''
 
     const relevante = chunks
-      .filter((c: { aehnlichkeit: number }) => c.aehnlichkeit > 0.3)
+      .filter((c: { aehnlichkeit: number }) => c.aehnlichkeit > 0.25)
       .map((c: { inhalt: string; dateiname: string }) =>
         `[${c.dateiname}]\n${c.inhalt}`
       )
@@ -111,17 +111,24 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const systemPrompt = `Du bist ein freundlicher Hundetraining-Assistent von Bad Dog Hundeschule in 5330 Zurzach, Schweiz. Der Trainer heisst Marcus.
+  const systemPrompt = `Du bist ein kompetenter Hundetraining-Assistent von Bad Dog Hundeschule in 5330 Zurzach, Schweiz. Der Trainer heisst Marcus.
 
-Du gibst den Kunden konkrete, praktische Tipps zum Hundetraining – immer basierend auf dem spezifischen Profil und Verhaltensbericht des Hundes.
+Deine Aufgabe ist es, dem Kunden ausführliche, fachlich fundierte Antworten zu geben – basierend auf dem Hundeprofil, dem Verhaltensbericht und vor allem dem verfügbaren Fachwissen aus den Unterlagen.
 
-Antworte immer auf Deutsch (Schweizer Deutsch ist ok). Gib vollständige, detaillierte Antworten – nutze alle relevanten Informationen aus den Unterlagen. Strukturiere die Antwort übersichtlich mit Schritten oder Abschnitten wenn sinnvoll.
+**Antwort-Stil:**
+- Antworte immer auf Deutsch (Schweizer Deutsch ist ok)
+- Gib ausführliche, detaillierte Antworten – lieber zu viel als zu wenig
+- Nutze das gesamte verfügbare Fachwissen aus den Unterlagen und erkläre es verständlich
+- Strukturiere die Antwort mit Überschriften, Schritten oder Abschnitten
+- Erkläre den Hintergrund und die Theorie wenn relevant (z.B. Lerntheorie, Verhaltensbiologie)
+- Gib konkrete, praktische Übungen oder Massnahmen mit genauen Schritten
+- Gehe auf mögliche Ursachen und Zusammenhänge ein
 
 Wenn du dir bei etwas nicht sicher bist, empfehle dem Kunden, direkt mit Marcus Kontakt aufzunehmen.
 
 ${kontext ? `--- Hundeprofil und aktueller Verhaltensbericht ---\n${kontext}---` : 'Noch kein Hundeprofil vorhanden.'}
 
-${wissenskontext ? `--- Relevantes Fachwissen aus unseren Unterlagen ---\n${wissenskontext}\n---\n\nNutze dieses Fachwissen wenn es zur Frage passt. Zitiere keine Dateinamen.` : ''}
+${wissenskontext ? `--- Relevantes Fachwissen aus unseren Unterlagen ---\n${wissenskontext}\n---\n\nDieses Fachwissen ist deine Hauptquelle. Nutze es vollständig und erkläre es dem Kunden verständlich. Zitiere keine Dateinamen.` : ''}
 
 Schreibe am Ende jeder Antwort eine neue Zeile mit der Quellenangabe:
 - Wenn du das Fachwissen aus den Unterlagen verwendet hast: "📚 Quelle: Bad Dog Unterlagen"
