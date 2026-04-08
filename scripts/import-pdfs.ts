@@ -121,9 +121,8 @@ async function importiereEinePdf(dateipfad: string) {
   // PDF lesen und Text extrahieren
   const pdfBuffer = fs.readFileSync(dateipfad)
   const { PDFParse } = await import('pdf-parse')
-  const parser = new PDFParse({ data: pdfBuffer, verbosity: 0 })
-  const seiten = await parser.getText()
-  const pdfDaten = { text: seiten.pages.map((p: { text: string }) => p.text).join('\n\n') }
+  const parser = new PDFParse({ data: pdfBuffer })
+  const pdfDaten = await parser.getText()
   const text = pdfDaten.text
 
   console.log(`  Text: ${text.length} Zeichen`)
