@@ -124,7 +124,7 @@ export default function ChatWidget() {
       {open && (
         <div style={{
           position: 'fixed', bottom: '88px', right: '24px',
-          width: '360px', maxWidth: 'calc(100vw - 48px)',
+          width: 'min(720px, calc(100vw - 48px))',
           height: '500px', maxHeight: 'calc(100vh - 120px)',
           zIndex: 9999,
           display: 'flex', flexDirection: 'column',
@@ -175,7 +175,7 @@ export default function ChatWidget() {
                   }}>
                     {m.content || (loading && i === messages.length - 1 ? '…' : '')}
                   </div>
-                  {m.role === 'assistant' && m.content && !loading && (
+                  {m.role === 'assistant' && m.content && !loading && i > 0 && (
                     <button
                       onClick={() => sendEmail(m.content, i)}
                       disabled={emailSending === i}
