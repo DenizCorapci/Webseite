@@ -135,7 +135,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-0 flex flex-col max-w-6xl mx-auto px-6" style={{ height: '100vh' }}>
+    <div className="min-h-screen pt-24 pb-0 flex flex-col max-w-7xl mx-auto px-6" style={{ height: '100vh' }}>
       {/* Header */}
       <div className="pt-8 pb-4 flex-shrink-0">
         <Link href="/portal" className="text-xs text-muted hover:text-rust transition-colors mb-4 inline-block">
