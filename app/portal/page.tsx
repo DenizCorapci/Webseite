@@ -169,7 +169,7 @@ export default function PortalPage() {
                     CHATTE MIT MIR
                   </p>
                   <p className="text-cream font-semibold text-base mt-1 leading-relaxed">
-                    Alle fundierten Informationen rund um den Hund,<br />exklusiv bei Bad Dog Hundeschule.
+                    Alle fundierten Informationen rund um den Hund, exklusiv bei Bad Dog Hundeschule.
                   </p>
                   <p className="text-rust text-sm mt-2 font-medium">Probiere es aus! →</p>
                 </div>
