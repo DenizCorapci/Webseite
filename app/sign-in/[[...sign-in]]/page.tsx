@@ -12,6 +12,7 @@ export default function SignInPage() {
         </div>
         <div className="flex justify-center">
           <SignIn
+            forceRedirectUrl="/portal"
             appearance={{
               elements: {
                 rootBox: 'w-full',
