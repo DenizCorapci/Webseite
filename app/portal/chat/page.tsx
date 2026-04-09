@@ -20,6 +20,7 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false)
   const [loadingHund, setLoadingHund] = useState(true)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const latestAssistantRef = useRef<HTMLDivElement>(null)
   const initialized = useRef(false)
   const [emailSending, setEmailSending] = useState<number | null>(null)
   const [emailSent, setEmailSent] = useState<number | null>(null)
@@ -65,9 +66,7 @@ export default function ChatPage() {
       })
   }, [user])
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, loading])
+  // Kein auto-scroll mehr — wird manuell gesteuert
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault()
@@ -79,8 +78,9 @@ export default function ChatPage() {
     setInput('')
     setLoading(true)
 
-    // Placeholder für streaming
+    // Placeholder für streaming + nach unten scrollen (zeigt "...")
     setMessages(prev => [...prev, { role: 'assistant', content: '' }])
+    setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
 
     try {
       const res = await fetch('/api/chat', {
@@ -115,6 +115,8 @@ export default function ChatPage() {
           { role: 'assistant', content: full },
         ])
       }
+      // Nach vollständiger Antwort: zum Anfang der Antwort scrollen
+      setTimeout(() => latestAssistantRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Unbekannter Fehler'
       setMessages(prev => [
@@ -156,7 +158,7 @@ export default function ChatPage() {
       {/* Nachrichten */}
       <div className="flex-1 overflow-y-auto py-4 space-y-4" style={{ minHeight: 0 }}>
         {messages.map((m, i) => (
-          <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+          <div key={i} ref={m.role === 'assistant' && i === messages.length - 1 ? latestAssistantRef : null} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             {m.role === 'assistant' && (
               <div className="w-7 h-7 bg-rust/20 border border-rust/40 flex items-center justify-center flex-shrink-0 mr-3 mt-0.5">
                 <span className="text-sm">🐾</span>
