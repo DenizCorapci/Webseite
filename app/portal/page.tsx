@@ -113,17 +113,17 @@ export default function PortalPage() {
 
   return (
     <div className="min-h-screen pt-32 pb-24 max-w-4xl mx-auto px-6">
-      <div className="mb-10 flex items-start justify-between gap-4">
-        <div>
-          <p className="section-label mb-2">Kundenportal</p>
-          <div className="divider mb-4" />
-          <h1 className="font-display text-6xl tracking-wider text-cream">
-            HALLO, {vorname.toUpperCase()}
+      <div className="mb-10">
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <h1 className="font-display text-7xl md:text-8xl tracking-wider text-cream">
+            KUNDENPORTAL
           </h1>
+          <Link href="/portal/profil" className="btn-outline text-xs py-2 px-4 flex-shrink-0 mt-4">
+            Mein Profil
+          </Link>
         </div>
-        <Link href="/portal/profil" className="btn-outline text-xs py-2 px-4 flex-shrink-0 mt-8">
-          Mein Profil
-        </Link>
+        <div className="divider mb-4" />
+        <p className="text-muted text-lg">Hallo, {vorname} 👋</p>
       </div>
 
       {!hund ? (
