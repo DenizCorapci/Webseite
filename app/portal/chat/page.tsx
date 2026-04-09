@@ -174,7 +174,7 @@ export default function ChatPage() {
                   <span className="text-muted animate-pulse">…</span>
                 ) : '')}
               </div>
-              {m.role === 'assistant' && m.content && !loading && (
+              {m.role === 'assistant' && m.content && !loading && i > 0 && (
                 <button
                   onClick={() => sendEmail(m.content, i)}
                   disabled={emailSending === i}
