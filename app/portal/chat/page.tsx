@@ -148,8 +148,8 @@ export default function ChatPage() {
             <span className="text-xl">🐾</span>
           </div>
           <div>
-            <h1 className="font-display text-2xl tracking-wider text-cream">KI-BERATER</h1>
-            {hundName && <p className="text-xs text-muted">Personalisiert für {hundName}</p>}
+            <h1 className="font-display text-2xl tracking-wider text-cream">CHATTE MIT MIR</h1>
+            <p className="text-xs text-muted">Alle fundierten Informationen rund um den Hund, exklusiv bei Bad Dog Hundeschule{hundName ? ` · für ${hundName}` : ''}.</p>
           </div>
         </div>
         <div className="divider mt-4" />
