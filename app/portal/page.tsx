@@ -165,13 +165,13 @@ export default function PortalPage() {
               <div className="flex items-center gap-4">
                 <span className="text-4xl">🐾</span>
                 <div>
-                  <p className="font-display text-2xl tracking-wider text-cream leading-tight">
+                  <p className="font-display text-4xl tracking-wider text-cream leading-tight">
                     CHATTE MIT MIR
                   </p>
-                  <p className="text-muted text-sm mt-1 leading-relaxed">
+                  <p className="text-cream font-semibold text-base mt-1 leading-relaxed">
                     Alle fundierten Informationen rund um den Hund,<br />exklusiv bei Bad Dog Hundeschule.
                   </p>
-                  <p className="text-rust text-xs mt-2">Probiere es aus! →</p>
+                  <p className="text-rust text-sm mt-2 font-medium">Probiere es aus! →</p>
                 </div>
               </div>
               <span className="text-rust text-4xl flex-shrink-0 group-hover:translate-x-2 transition-transform">→</span>
