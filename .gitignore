@@ -24,3 +24,7 @@
 next-env.d.ts
 
 .vercel
+
+# PDF Unterlagen (lokal für Import-Script)
+/PDF/
+*.mp4

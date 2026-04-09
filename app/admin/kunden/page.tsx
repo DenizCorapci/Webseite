@@ -15,6 +15,7 @@ type Kunde = {
   telefon: string
   plz: string
   ort: string
+  hund_id: string | null
   hund_name: string
   hund_rasse: string
 }
@@ -38,7 +39,7 @@ export default function AdminKundenPage() {
 
     const { data: hunde } = await supabase
       .from('hunde')
-      .select('clerk_user_id, name, rasse')
+      .select('id, clerk_user_id, name, rasse')
 
     const hundeMap = new Map(hunde?.map(h => [h.clerk_user_id, h]) ?? [])
 
@@ -51,6 +52,7 @@ export default function AdminKundenPage() {
       telefon: p.telefon ?? '',
       plz: p.plz ?? '',
       ort: p.ort ?? '',
+      hund_id: hundeMap.get(p.clerk_user_id)?.id ?? null,
       hund_name: hundeMap.get(p.clerk_user_id)?.name ?? '—',
       hund_rasse: hundeMap.get(p.clerk_user_id)?.rasse ?? '—',
     }))
@@ -225,7 +227,13 @@ export default function AdminKundenPage() {
                     />
                   </td>
                   <td className="py-3 px-3">
-                    <p className="text-cream font-medium">{k.vorname} {k.nachname}</p>
+                    {k.hund_id ? (
+                      <Link href={`/admin/hunde/${k.hund_id}`} className="text-cream font-medium hover:text-rust transition-colors">
+                        {k.vorname} {k.nachname}
+                      </Link>
+                    ) : (
+                      <p className="text-cream font-medium">{k.vorname} {k.nachname}</p>
+                    )}
                   </td>
                   <td className="py-3 px-3 text-muted">{k.email || '—'}</td>
                   <td className="py-3 px-3 text-muted">{k.telefon || '—'}</td>

@@ -10,8 +10,9 @@ const links = [
   { href: '/kurse',      label: 'Kurse' },
   { href: '/termine',    label: 'Termine' },
   { href: '/stories',    label: 'Stories' },
-  { href: '/lernvideos', label: 'Lernvideos' },
-  { href: '/ueber-uns',  label: 'Über uns' },
+  { href: '/lernvideos', label: 'Videos' },
+  { href: '/tipps',      label: 'Tipps' },
+  { href: '/ueber-uns',  label: 'Team' },
   { href: '/kontakt',    label: 'Kontakt' },
 ]
 
@@ -40,20 +41,20 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-5">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="font-body text-sm font-medium text-cream/70 hover:text-cream tracking-wide transition-colors"
+              className="font-body text-sm font-medium text-cream/70 hover:text-cream tracking-wide transition-colors whitespace-nowrap"
             >
               {l.label}
             </Link>
           ))}
           {isSignedIn ? (
             <div className="flex items-center gap-3">
-              <Link href="/portal" className="font-body text-sm font-medium text-cream/70 hover:text-cream tracking-wide transition-colors">
-                Mein Portal
+              <Link href="/portal" className="font-body text-sm font-medium text-cream/70 hover:text-cream tracking-wide transition-colors whitespace-nowrap">
+                Portal
               </Link>
               <SignOutButton>
                 <button className="btn-outline text-xs py-2.5 px-5">Abmelden</button>
@@ -72,7 +73,7 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="lg:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setOpen(!open)}
           aria-label="Menü"
         >
@@ -84,7 +85,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-surface border-t border-border px-6 py-6 flex flex-col gap-5">
+        <div className="lg:hidden bg-surface border-t border-border px-6 py-6 flex flex-col gap-5">
           {links.map((l) => (
             <Link
               key={l.href}

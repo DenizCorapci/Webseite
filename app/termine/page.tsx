@@ -2,6 +2,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
+import { useUser } from '@clerk/nextjs'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
@@ -57,21 +58,48 @@ function getMonat(datum: string) {
 }
 
 export default function TerminePage() {
+  const { user } = useUser()
   const [termine, setTermine] = useState<Termin[]>([])
   const [loading, setLoading] = useState(true)
+  const [meineAnmeldungen, setMeineAnmeldungen] = useState<Set<string>>(new Set())
+  const [busy, setBusy] = useState<string | null>(null)
 
-  useEffect(() => {
+  async function load() {
     const heute = new Date().toISOString().split('T')[0]
-    supabase
+    const { data } = await supabase
       .from('termine')
       .select('*')
       .gte('datum', heute)
       .order('datum', { ascending: true })
-      .then(({ data }) => {
-        setTermine(data ?? [])
-        setLoading(false)
-      })
-  }, [])
+    setTermine(data ?? [])
+
+    if (user) {
+      const { data: anmeldungen } = await supabase
+        .from('termin_anmeldungen')
+        .select('termin_id')
+        .eq('clerk_user_id', user.id)
+      setMeineAnmeldungen(new Set(anmeldungen?.map(a => a.termin_id) ?? []))
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => { load() }, [user])
+
+  async function handleAnmelden(termin: Termin) {
+    if (!user) return
+    setBusy(termin.id)
+    const bereitsAngemeldet = meineAnmeldungen.has(termin.id)
+    if (bereitsAngemeldet) {
+      await supabase.from('termin_anmeldungen').delete()
+        .eq('termin_id', termin.id).eq('clerk_user_id', user.id)
+      await supabase.from('termine').update({ belegt: Math.max(0, termin.belegt - 1) }).eq('id', termin.id)
+    } else {
+      await supabase.from('termin_anmeldungen').insert({ termin_id: termin.id, clerk_user_id: user.id })
+      await supabase.from('termine').update({ belegt: termin.belegt + 1 }).eq('id', termin.id)
+    }
+    await load()
+    setBusy(null)
+  }
 
   const monateMap = new Map<string, Termin[]>()
   for (const t of termine) {
@@ -117,8 +145,10 @@ export default function TerminePage() {
                 {monatsTermine.map((t) => {
                   const cfg = typConfig[t.typ] ?? typConfig['Hundeschule']
                   const voll = t.belegt >= t.plaetze
+                  const angemeldet = meineAnmeldungen.has(t.id)
+                  const isBusy = busy === t.id
                   return (
-                    <div key={t.id} className={`bg-card border border-border p-6 flex flex-col lg:flex-row lg:items-center gap-6 ${voll ? 'opacity-60' : ''}`}>
+                    <div key={t.id} className={`bg-card border border-border p-6 flex flex-col lg:flex-row lg:items-center gap-6 ${voll && !angemeldet ? 'opacity-60' : ''}`}>
                       <div className="lg:w-48 flex-shrink-0">
                         <p className="text-cream font-medium text-sm">{formatDatum(t.datum)}</p>
                         <p className="text-muted text-xs mt-0.5">{t.uhrzeit} Uhr · {t.dauer}</p>
@@ -129,6 +159,9 @@ export default function TerminePage() {
                             {cfg.icon} {t.typ}
                           </span>
                           <span className="text-xs text-muted border border-border px-2 py-0.5 rounded-sm">{t.level}</span>
+                          {angemeldet && (
+                            <span className="text-xs border border-emerald-700/50 text-emerald-400 px-2 py-0.5 rounded-sm">✓ Angemeldet</span>
+                          )}
                         </div>
                         <p className="text-cream font-medium">{t.kurs}</p>
                         <p className="text-muted text-xs mt-0.5">📍 {t.ort}</p>
@@ -137,10 +170,35 @@ export default function TerminePage() {
                         <Auslastung belegt={t.belegt} plaetze={t.plaetze} />
                       </div>
                       <div className="flex-shrink-0">
-                        {voll ? (
-                          <span className="text-xs text-muted border border-border px-4 py-2 block text-center">Ausgebucht</span>
+                        {user ? (
+                          angemeldet ? (
+                            <button
+                              onClick={() => handleAnmelden(t)}
+                              disabled={isBusy}
+                              className="text-xs border border-border text-muted hover:border-red-600 hover:text-red-400 px-4 py-2 transition-colors"
+                            >
+                              {isBusy ? '...' : 'Abmelden'}
+                            </button>
+                          ) : voll ? (
+                            <span className="text-xs text-muted border border-border px-4 py-2 block text-center">Ausgebucht</span>
+                          ) : (
+                            <button
+                              onClick={() => handleAnmelden(t)}
+                              disabled={isBusy}
+                              className="btn-primary text-xs py-2 px-4"
+                            >
+                              {isBusy ? '...' : 'Anmelden →'}
+                            </button>
+                          )
                         ) : (
-                          <Link href="/buchen" className="btn-primary text-xs py-2 px-4">Anmelden →</Link>
+                          voll ? (
+                            <span className="text-xs text-muted border border-border px-4 py-2 block text-center">Ausgebucht</span>
+                          ) : (
+                            <Link
+                              href={`/buchen?termin_id=${t.id}&kurs=${encodeURIComponent(t.kurs)}&datum=${t.datum}&uhrzeit=${encodeURIComponent(t.uhrzeit)}&ort=${encodeURIComponent(t.ort)}&typ=${encodeURIComponent(t.typ)}`}
+                              className="btn-primary text-xs py-2 px-4"
+                            >Anmelden →</Link>
+                          )
                         )}
                       </div>
                     </div>

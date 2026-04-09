@@ -24,6 +24,19 @@ type Bericht = {
   zusammenfassung: string
 }
 
+type MeinTermin = {
+  id: string
+  kurs: string
+  typ: string
+  datum: string
+  uhrzeit: string
+  dauer: string
+  ort: string
+  level: string
+  plaetze: number
+  belegt: number
+}
+
 type Profil = {
   vorname: string
   nachname: string
@@ -35,6 +48,7 @@ export default function PortalPage() {
   const [hund, setHund] = useState<Hund | null>(null)
   const [berichte, setBerichte] = useState<Bericht[]>([])
   const [profil, setProfil] = useState<Profil | null>(null)
+  const [meineTermine, setMeineTermine] = useState<MeinTermin[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -62,6 +76,25 @@ export default function PortalPage() {
           .order('datum', { ascending: false })
         setBerichte(berichteData ?? [])
       }
+
+      // Meine Termin-Anmeldungen
+      const { data: anmeldungen } = await supabase
+        .from('termin_anmeldungen')
+        .select('termin_id')
+        .eq('clerk_user_id', user!.id)
+
+      if (anmeldungen && anmeldungen.length > 0) {
+        const terminIds = anmeldungen.map(a => a.termin_id)
+        const heute = new Date().toISOString().split('T')[0]
+        const { data: termineData } = await supabase
+          .from('termine')
+          .select('id, kurs, typ, datum, uhrzeit, dauer, ort, level, plaetze, belegt')
+          .in('id', terminIds)
+          .gte('datum', heute)
+          .order('datum', { ascending: true })
+        setMeineTermine(termineData ?? [])
+      }
+
       setLoading(false)
     }
     load()
@@ -121,6 +154,49 @@ export default function PortalPage() {
             <Link href="/portal/hund/bearbeiten" className="btn-outline text-xs py-2 px-4">
               Bearbeiten
             </Link>
+          </div>
+
+          {/* Meine Termine */}
+          <div>
+            <h3 className="font-display text-2xl tracking-wider text-cream mb-4">MEINE TERMINE</h3>
+            {meineTermine.length === 0 ? (
+              <div className="bg-card border border-border p-6 flex items-center justify-between gap-4">
+                <p className="text-muted text-sm">Noch keine Termine gebucht.</p>
+                <a href="/termine" className="btn-outline text-xs py-2 px-4 flex-shrink-0">Termine ansehen →</a>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {meineTermine.map(t => {
+                  const frei = t.plaetze - t.belegt
+                  const datum = new Date(t.datum)
+                  const tage = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
+                  const monate = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+                  const datumStr = `${tage[datum.getDay()]}, ${String(datum.getDate()).padStart(2, '0')}. ${monate[datum.getMonth()]} ${datum.getFullYear()}`
+                  return (
+                    <div key={t.id} className="bg-card border border-border p-5">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                        <div className="flex-1">
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
+                            <span className="text-xs border border-rust/30 text-rust px-2 py-0.5">{t.typ}</span>
+                            <span className="text-xs border border-border text-muted px-2 py-0.5">{t.level}</span>
+                            <span className="text-xs border border-emerald-700/50 text-emerald-400 px-2 py-0.5">✓ Angemeldet</span>
+                          </div>
+                          <p className="text-cream font-medium">{t.kurs}</p>
+                          <div className="mt-2 space-y-0.5">
+                            <p className="text-muted text-xs">📅 {datumStr} · {t.uhrzeit} Uhr · {t.dauer}</p>
+                            <p className="text-muted text-xs">📍 {t.ort}</p>
+                            <p className="text-muted text-xs">👥 {t.belegt}/{t.plaetze} Plätze belegt · {frei} frei</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+                <a href="/termine" className="block text-center text-xs text-muted hover:text-rust transition-colors pt-1">
+                  Weitere Termine ansehen →
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Verhaltensberichte */}

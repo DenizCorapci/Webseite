@@ -1,16 +1,31 @@
-import type { Metadata } from 'next'
+'use client'
+export const dynamic = 'force-dynamic'
+
+import { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import BookingForm from '@/components/BookingForm'
+import Link from 'next/link'
 
-export const metadata: Metadata = {
-  title: 'Kurs buchen',
-  description: 'Sende eine Buchungsanfrage für einen Kurs bei Bad Dog Hundeschule in 5330 Zurzach.',
-}
+function BuchenInner() {
+  const params = useSearchParams()
+  const terminId = params.get('termin_id')
+  const kurs = params.get('kurs')
+  const datum = params.get('datum')
+  const uhrzeit = params.get('uhrzeit')
+  const ort = params.get('ort')
+  const typ = params.get('typ')
 
-export default function BuchenPage() {
+  const hatTermin = !!(terminId && kurs && datum)
+
+  function formatDatum(d: string) {
+    return new Date(d).toLocaleDateString('de-CH', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })
+  }
+
   return (
     <>
       <section className="pt-32 pb-16 bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-6">
+          <Link href="/termine" className="text-xs text-muted hover:text-rust transition-colors mb-6 inline-block">← Zurück zu den Terminen</Link>
           <p className="section-label mb-3">Bereit?</p>
           <div className="divider mb-6" />
           <h1 className="font-display text-7xl sm:text-8xl tracking-wider text-cream">
@@ -23,13 +38,30 @@ export default function BuchenPage() {
         </div>
       </section>
 
+      {hatTermin && (
+        <div className="bg-rust/10 border-b border-rust/30">
+          <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="flex-1">
+              <p className="text-xs font-semibold tracking-widest uppercase text-rust mb-1">Ausgewählter Termin</p>
+              <p className="text-cream font-medium text-lg">{kurs}</p>
+              <p className="text-muted text-sm">{formatDatum(datum!)} · {uhrzeit} Uhr{ort ? ` · ${ort}` : ''}</p>
+            </div>
+            {typ && (
+              <span className="text-xs border border-rust/40 text-rust px-3 py-1 self-start sm:self-auto">{typ}</span>
+            )}
+          </div>
+        </div>
+      )}
+
       <section className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-3 gap-16">
-        {/* Form */}
         <div className="lg:col-span-2">
-          <BookingForm />
+          <BookingForm
+            terminId={terminId}
+            kurs={kurs}
+            datum={datum}
+          />
         </div>
 
-        {/* Info */}
         <div className="space-y-6">
           <div className="bg-card border border-border p-6">
             <p className="section-label mb-4">So läuft es ab</p>
@@ -37,7 +69,7 @@ export default function BuchenPage() {
               {[
                 'Formular ausfüllen und absenden.',
                 'Marcus meldet sich innerhalb von 48 Stunden.',
-                'Gemeinsam den passenden Termin finden.',
+                'Platzbestätigung erhalten.',
                 'Bezahlung vor Ort beim ersten Training.',
               ].map((step, i) => (
                 <li key={i} className="flex gap-3 text-sm text-cream/70">
@@ -69,5 +101,13 @@ export default function BuchenPage() {
         </div>
       </section>
     </>
+  )
+}
+
+export default function BuchenPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center pt-16"><p className="text-muted">Lade...</p></div>}>
+      <BuchenInner />
+    </Suspense>
   )
 }
