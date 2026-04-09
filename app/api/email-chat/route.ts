@@ -3,9 +3,8 @@ import { Resend } from 'resend'
 import { auth, currentUser } from '@clerk/nextjs/server'
 import { marked } from 'marked'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(req: NextRequest) {
+  const resend = new Resend(process.env.RESEND_API_KEY)
   const { userId } = await auth()
   if (!userId) {
     return new Response(JSON.stringify({ error: 'Nicht eingeloggt' }), { status: 401 })
