@@ -1,10 +1,9 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Über uns',
-  description: 'Bad Dog Hundeschule — Trainer Marcus und Maskottchen Pino in 5330 Zurzach.',
+  description: 'Marcus Weissel — Hundeverhaltenstrainer, Hundeverhaltensberater & Hundeverhaltenstherapeut. Spezialist für schwierige Hunde im Kanton Zürich.',
 }
 
 export default function UeberUnsPage() {
@@ -21,115 +20,128 @@ export default function UeberUnsPage() {
       </section>
 
       {/* Marcus */}
-      <section className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         <div>
           <p className="section-label mb-3">Trainer</p>
           <div className="divider mb-6" />
-          <h2 className="font-display text-6xl tracking-wider text-cream mb-8">MARCUS</h2>
+          <h2 className="font-display text-6xl tracking-wider text-cream mb-2">MARCUS</h2>
+          <p className="font-display text-2xl tracking-wider text-rust mb-8">WEISSEL</p>
+          <div className="space-y-3 text-cream/70 leading-relaxed mb-8">
+            <p className="text-cream/90 font-medium">
+              Hundeverhaltenstrainer, Hundeverhaltensberater & Hundeverhaltenstherapeut
+            </p>
+            <p className="text-cream/60 text-sm">
+              Absolvent der Akademie für angewandte Tierpsychologie (ATN)
+            </p>
+          </div>
           <div className="space-y-4 text-cream/70 leading-relaxed">
             <p>
-              Marcus ist Hundetrainer aus Überzeugung. Kein Hund ist hoffnungslos —
-              aber nicht jede Methode passt zu jedem Hund. Diese Erkenntnis ist die
-              Grundlage von Bad Dog.
+              Marcus Weissel ist Experte für Hunde mit Verhaltensschwierigkeiten.
+              Mit Einfühlungsvermögen, Ruhe und Struktur begleitet er Hund und Mensch —
+              und bringt das fachliche Wissen für schwierige Fälle mit.
             </p>
             <p>
-              Seine Trainingsphilosophie ist einfach: Konsequenz ohne Härte.
-              Klare Kommunikation. Den Hund dort abholen, wo er steht — nicht wo
-              man ihn gerne hätte.
-            </p>
-            <p>
-              Bei Bad Dog gibt es keine Versprechungen über Nacht. Dafür echte Fortschritte,
-              die halten. Marcus begleitet dich und deinen Hund so lange, bis das Ziel erreicht ist.
+              Der Fokus liegt auf Vertrauen, Klarheit und gewaltfreiem Training.
+              Nicht Symptombehandlung, sondern Ursachenforschung — wissenschaftlich
+              fundiert auf Basis von Ethologie, Verhaltensbiologie und Verhaltensmedizin.
             </p>
           </div>
         </div>
 
-        {/* Placeholder for Marcus photo */}
-        <div className="flex justify-center lg:justify-end">
-          <div className="relative">
-            <div className="w-72 h-80 bg-card border border-border flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl mb-4">👤</div>
-                <p className="text-muted text-sm">Foto von Marcus</p>
-                <p className="text-muted text-xs mt-1">folgt demnächst</p>
-              </div>
-            </div>
-            <div className="absolute -bottom-2 -left-2 w-12 h-12 bg-rust" />
-            <div className="absolute -top-2 -right-2 w-6 h-6 border border-rust" />
+        {/* Zertifizierungen & Erfahrungen */}
+        <div className="space-y-8">
+          <div className="bg-card border border-border p-8">
+            <h3 className="font-display text-xl tracking-wider text-cream mb-4">ZERTIFIZIERUNGEN</h3>
+            <ul className="space-y-2 text-cream/70 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-rust mt-1">—</span>
+                Akademie für angewandte Tierpsychologie Schweiz (ATN)
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rust mt-1">—</span>
+                Akkreditierung Veterinäramt Zürich
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-card border border-border p-8">
+            <h3 className="font-display text-xl tracking-wider text-cream mb-4">AUSBILDUNGSSCHWERPUNKTE</h3>
+            <ul className="space-y-2 text-cream/70 text-sm">
+              {['Hundewissenschaften', 'Tierpsychosomatik', 'Verhaltensökonomie', 'Verhaltenstraining', 'Verhaltenstherapie'].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <span className="text-rust mt-1">—</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-card border border-border p-8">
+            <h3 className="font-display text-xl tracking-wider text-cream mb-4">ZUSÄTZLICHE ERFAHRUNGEN</h3>
+            <ul className="space-y-2 text-cream/70 text-sm">
+              {['Diensthunde Polizei und Militär', 'Neuropsychologie', 'Aggressionsverhalten', 'Verhaltensphysiologie'].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <span className="text-rust mt-1">—</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* Pino */}
+      {/* Spezialisierungen */}
       <section className="bg-surface border-y border-border">
-        <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Pino image */}
-          <div className="flex justify-center order-2 lg:order-1">
-            <div className="relative">
-              <div className="w-72 h-72 rounded-full overflow-hidden border-2 border-rust/40">
-                <Image
-                  src="/pino2.png"
-                  alt="Pino — Dobermann und Maskottchen der Bad Dog Hundeschule"
-                  fill
-                  className="object-cover object-top"
-                />
-              </div>
-              <div className="absolute -bottom-4 -right-4 bg-rust px-4 py-2">
-                <p className="font-display text-sm tracking-widest text-cream">PINO</p>
-              </div>
-            </div>
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="mb-12">
+            <p className="section-label mb-3">Schwerpunkte</p>
+            <div className="divider mb-6" />
+            <h2 className="font-display text-6xl tracking-wider text-cream">SPEZIALISIERUNGEN</h2>
           </div>
 
-          {/* Text */}
-          <div className="order-1 lg:order-2">
-            <p className="section-label mb-3">Das Maskottchen</p>
-            <div className="divider mb-6" />
-            <h2 className="font-display text-6xl tracking-wider text-cream mb-8">PINO</h2>
-            <div className="space-y-4 text-cream/70 leading-relaxed">
-              <p>
-                Pino ist ein Dobermann — elegant, intelligent, missverstanden.
-                Wie viele Hunde, die als "schwierig" gelten, braucht er keine
-                harte Hand, sondern eine klare.
-              </p>
-              <p>
-                Pino ist das Gesicht von Bad Dog — weil er verkörpert, worum es hier geht:
-                Ein Hund, dem man nicht ansieht was er kann, bis man ihn sieht.
-              </p>
-              <p>
-                Der Name "Bad Dog"? Ironisch gemeint. Kein Hund ist von Natur aus böse.
-                Manche brauchen nur jemanden, der sie versteht.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { title: 'Aggressionsverhalten', sub: '& Reaktivität' },
+              { title: 'Angststörungen', sub: '& Traumata' },
+              { title: 'Trennungsstress', sub: '& Alleine bleiben' },
+              { title: 'Hyperaktivität', sub: '& Stressregulation' },
+              { title: 'Ressourcenverteidigung', sub: '' },
+              { title: 'Welpen', sub: '& Junghunde' },
+            ].map((item) => (
+              <div key={item.title} className="bg-card border border-border p-8">
+                <div className="w-2 h-2 bg-rust mb-6" />
+                <h3 className="font-display text-xl tracking-wider text-cream">{item.title}</h3>
+                {item.sub && <p className="text-cream/50 text-sm mt-1">{item.sub}</p>}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Philosophy */}
+      {/* Ablauf */}
       <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="mb-12">
-          <p className="section-label mb-3">Unsere Haltung</p>
+          <p className="section-label mb-3">Vorgehen</p>
           <div className="divider mb-6" />
-          <h2 className="font-display text-6xl tracking-wider text-cream">
-            PHILOSOPHIE
-          </h2>
+          <h2 className="font-display text-6xl tracking-wider text-cream">ABLAUF</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
             {
               number: '01',
-              title: 'Kein Hokuspokus',
-              text: 'Konsequentes Training basierend auf Verständnis — nicht auf Druck oder Tricks. Was funktioniert, ist was bleibt.',
+              title: 'Analyse',
+              text: 'Professionelle Verhaltensdiagnostik zur Ursachenforschung. Individuelle Betreuung für Mensch-Hund-Teams.',
             },
             {
               number: '02',
-              title: 'Auf Augenhöhe',
-              text: 'Weder Hund noch Halter werden bevormundet. Marcus erklärt, warum er was macht — und hört zu.',
+              title: 'Strategie',
+              text: 'Individueller Therapie- und Trainingsplan basierend auf den Ergebnissen der Verhaltensanalyse.',
             },
             {
               number: '03',
-              title: 'Echte Fortschritte',
-              text: 'Keine schnellen Versprechen. Dafür Ergebnisse, die auch noch in einem Jahr halten.',
+              title: 'Transformation',
+              text: '5 bis 15 Sitzungen über mehrere Wochen oder Monate. Ziel: nachhaltige Verhaltensänderung und entspannter Alltag.',
             },
           ].map((p) => (
             <div key={p.number} className="bg-card border border-border p-8">
@@ -143,16 +155,128 @@ export default function UeberUnsPage() {
         </div>
       </section>
 
+      {/* Regionen */}
+      <section className="bg-surface border-y border-border">
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="mb-12">
+            <p className="section-label mb-3">Einsatzgebiet</p>
+            <div className="divider mb-6" />
+            <h2 className="font-display text-6xl tracking-wider text-cream mb-4">REGIONEN</h2>
+            <p className="text-cream/60">Mobile Hundeschule — gesamter Kanton Zürich sowie Wollerau und Freienbach.</p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            {['Zürich', 'Winterthur', 'Uster', 'Dübendorf', 'Dietikon', 'Wetzikon', 'Wädenswil', 'Horgen', 'Bülach', 'Adliswil', 'Regensdorf', 'Volketswil', 'Thalwil', 'Schlieren', 'Opfikon', 'Kloten', 'Wollerau', 'Freienbach'].map((region) => (
+              <span key={region} className="border border-border text-cream/60 text-sm px-4 py-2 font-display tracking-wider">
+                {region.toUpperCase()}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Preise */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="mb-12">
+          <p className="section-label mb-3">Investition</p>
+          <div className="divider mb-6" />
+          <h2 className="font-display text-6xl tracking-wider text-cream">PREISE</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <div className="bg-card border border-border p-8">
+            <h3 className="font-display text-lg tracking-wider text-cream mb-2">VERHALTENS- & CHARAKTERANALYSE</h3>
+            <p className="font-display text-4xl text-rust mb-3">135 CHF</p>
+            <ul className="space-y-1 text-cream/60 text-sm">
+              <li>ca. 90 Minuten</li>
+              <li>vor Ort oder online</li>
+            </ul>
+          </div>
+
+          <div className="bg-card border border-border p-8">
+            <h3 className="font-display text-lg tracking-wider text-cream mb-2">EINZELSTUNDE VERHALTENSTRAINING</h3>
+            <p className="font-display text-4xl text-rust mb-3">99 CHF</p>
+          </div>
+
+          <div className="bg-card border border-border p-8">
+            <h3 className="font-display text-lg tracking-wider text-cream mb-2">THERAPIE- & TRAININGSPLAN</h3>
+            <p className="font-display text-4xl text-rust mb-3">49 CHF</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-card border border-border p-8">
+            <h3 className="font-display text-lg tracking-wider text-cream mb-2">ANFAHRT</h3>
+            <p className="font-display text-4xl text-rust mb-3">19 CHF</p>
+          </div>
+
+          <div className="bg-card border border-border p-8">
+            <h3 className="font-display text-lg tracking-wider text-cream mb-3">ZAHLUNG & ZUSATZSERVICE</h3>
+            <ul className="space-y-2 text-cream/70 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-rust mt-1">—</span>
+                Zahlung per Überweisung oder Twint
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rust mt-1">—</span>
+                WhatsApp-Support für kurze Fragen während der Zusammenarbeit
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-surface border-y border-border">
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="mb-12">
+            <p className="section-label mb-3">Häufige Fragen</p>
+            <div className="divider mb-6" />
+            <h2 className="font-display text-6xl tracking-wider text-cream">FAQ</h2>
+          </div>
+
+          <div className="space-y-4 max-w-4xl">
+            {[
+              {
+                q: 'Wer hilft bei Problemhunden?',
+                a: 'Spezialisierter Hundepsychologe und Verhaltenstherapeut mit Ausbildung an der Akademie für angewandte Tierpsychologie (ATN) und Akkreditierung des Veterinäramts Zürich.',
+              },
+              {
+                q: 'Was ist der Unterschied zu einer normalen Hundeschule?',
+                a: 'Der Fokus liegt auf Ursachen statt Symptombehandlung. Statt oberflächliche Verhaltenskorrektur wird das eigentliche Problem analysiert und behandelt.',
+              },
+              {
+                q: 'Bei welchen Problemen wird geholfen?',
+                a: 'Aggression, Angst, Stress, Hyperaktivität, Trennungsangst und Ressourcenverteidigung — sowie alle weiteren Verhaltensschwierigkeiten.',
+              },
+              {
+                q: 'Auch für schwierige Fälle geeignet?',
+                a: 'Ja — auch nach erfolglosen Trainingsversuchen bei anderen Trainern. Schwierige Fälle sind die Spezialität.',
+              },
+              {
+                q: 'Wie lange dauert die Verhaltensmodifikation?',
+                a: '5 bis 15 Sitzungen über mehrere Wochen oder Monate — je nach Ausgangslage und Verhaltensproblem.',
+              },
+            ].map((item) => (
+              <div key={item.q} className="bg-card border border-border p-8">
+                <h3 className="font-display text-lg tracking-wider text-cream mb-3">{item.q}</h3>
+                <p className="text-cream/60 text-sm leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-surface border-t border-border">
         <div className="max-w-7xl mx-auto px-6 py-16 text-center">
           <h2 className="font-display text-5xl tracking-wider text-cream mb-4">
-            LERN UNS KENNEN
+            JETZT ANFRAGEN
           </h2>
-          <p className="text-muted mb-8 max-w-md mx-auto">
-            Der beste Weg uns kennenzulernen? Einfach vorbeikommen.
-            Oder schreib Marcus eine Nachricht.
+          <p className="text-muted mb-2 max-w-md mx-auto">
+            Marcus Weissel — direkt erreichbar per Telefon oder WhatsApp.
           </p>
+          <p className="text-rust font-display tracking-wider mb-8">+41 77 526 10 32</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/buchen" className="btn-primary">Kurs anfragen</Link>
             <Link href="/kontakt" className="btn-outline">Kontakt</Link>

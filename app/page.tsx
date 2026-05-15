@@ -111,7 +111,7 @@ export default function HomePage() {
           {/* Text */}
           <div className="order-2 lg:order-1">
             <p className="section-label mb-6 animate-fade-up">
-              Hundeschule · 5330 Zurzach
+              Mobile Hundeschule · Kanton Zürich
             </p>
             <h1 className="font-display leading-none tracking-wider text-cream animate-fade-up-delay-1"
               style={{ fontSize: 'clamp(5rem, 12vw, 9rem)' }}>
@@ -122,8 +122,8 @@ export default function HomePage() {
               ⚠ Testseite — nicht öffentlich
             </p>
             <p className="mt-6 text-cream/60 text-lg leading-relaxed max-w-md animate-fade-up-delay-2">
-              Hundeschule, Einzeltraining, Social Walks und Mantrailing —
-              mit Trainer Marcus in Zurzach.
+              Mobile Hundeschule für schwierige Hunde und verzweifelte Hundebesitzer —
+              Verhaltenstraining & Verhaltenstherapie im Kanton Zürich.
             </p>
             <div className="mt-8 flex flex-wrap gap-4 animate-fade-up-delay-3">
               <Link href="/buchen" className="btn-primary">
@@ -137,9 +137,9 @@ export default function HomePage() {
             {/* Stats */}
             <div className="mt-12 flex gap-10 animate-fade-up-delay-4">
               {[
-                { num: '4', label: 'Kursangebote' },
-                { num: '1:1', label: 'Einzeltraining' },
-                { num: '100%', label: 'Herzblut' },
+                { num: 'ATN', label: 'Zertifiziert' },
+                { num: '1:1', label: 'Individuell' },
+                { num: 'ZH', label: 'Kanton Zürich' },
               ].map((s, i) => (
                 <div key={i}>
                   <p className="font-display text-4xl text-gradient">{s.num}</p>
@@ -323,16 +323,23 @@ export default function HomePage() {
               MARCUS
             </h2>
             <div className="space-y-4 text-cream/70 leading-relaxed">
-              <p>
-                Hinter Bad Dog steht Marcus — ein Hundetrainer, der Ergebnisse liefert.
-                Kein Hokuspokus, keine leeren Versprechen. Konsequentes, hundefreundliches
-                Training, das wirklich funktioniert.
+              <p className="text-cream/90 font-medium text-sm">
+                Hundeverhaltenstrainer, Hundeverhaltensberater & Hundeverhaltenstherapeut
+              </p>
+              <p className="text-cream/50 text-sm">
+                Absolvent der Akademie für angewandte Tierpsychologie (ATN) ·
+                Akkreditiert Veterinäramt Zürich
               </p>
               <p>
-                Von der Grundausbildung bis zum Mantrailing: Marcus begleitet dich und
-                deinen Hund auf dem Weg zu einer echten Partnerschaft — geduldig,
-                direkt, auf Augenhöhe.
+                Experte für Hunde mit Verhaltensschwierigkeiten. Mit Einfühlungsvermögen,
+                Ruhe und Struktur — und dem fachlichen Wissen für schwierige Fälle.
+                Fokus auf Ursachen statt Symptombehandlung.
               </p>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {['Aggressionsverhalten', 'Angststörungen', 'Trennungsstress', 'Hyperaktivität', 'Ressourcenverteidigung'].map((s) => (
+                <span key={s} className="text-xs border border-border text-cream/50 px-3 py-1">{s}</span>
+              ))}
             </div>
             <div className="mt-8 flex gap-4">
               <Link href="/ueber-uns" className="btn-outline text-xs py-2.5 px-5">Mehr über Marcus</Link>
@@ -354,7 +361,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="space-y-3 border-t border-border pt-6">
-                  {['Hundeschule (Gruppen)', '1:1 Einzeltraining', 'Social Walks', 'Mantrailing'].map((s) => (
+                  {['Aggressionsverhalten & Reaktivität', 'Angststörungen & Traumata', 'Trennungsstress', 'Hyperaktivität & Stress', 'Ressourcenverteidigung'].map((s) => (
                     <div key={s} className="flex items-center gap-3 text-sm text-cream/70">
                       <span className="w-1.5 h-1.5 bg-rust rounded-full flex-shrink-0" />
                       {s}
@@ -362,8 +369,8 @@ export default function HomePage() {
                   ))}
                 </div>
                 <div className="mt-6 pt-6 border-t border-border">
-                  <p className="text-xs text-muted">Standort</p>
-                  <p className="text-sm text-cream mt-1">Andelfingerstrasse 2b, 5330 Zurzach</p>
+                  <p className="text-xs text-muted">Einsatzgebiet</p>
+                  <p className="text-sm text-cream mt-1">Mobile · Gesamter Kanton Zürich</p>
                 </div>
               </div>
               <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-rust" />
@@ -463,11 +470,12 @@ export default function HomePage() {
             und wir finden den passenden Kurs für dich und deinen Hund.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/buchen" className="btn-primary">Jetzt Kurs anfragen</Link>
-            <Link href="/kontakt" className="btn-outline">Fragen? Meld dich!</Link>
+            <Link href="/buchen" className="btn-primary">Jetzt anfragen</Link>
+            <a href="https://wa.me/41775261032" className="btn-outline">WhatsApp</a>
           </div>
-          <p className="mt-12 text-muted text-sm">
-            Bad Dog Hundeschule · Andelfingerstrasse 2b · 5330 Zurzach
+          <p className="mt-8 font-display text-xl tracking-wider text-rust">+41 77 526 10 32</p>
+          <p className="mt-2 text-muted text-sm">
+            BAD DOG ZH · Marcus Weissel · Mobile Hundeschule Kanton Zürich
           </p>
         </div>
       </section>
