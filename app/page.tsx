@@ -1,18 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-// Pexels Dobermann photos (free, reliable CDN)
-const DOBERMANN_IMAGES = [
-  { id: '1719626', alt: 'Dobermann schwarz-braun — Fokus' },
-  { id: '7384943', alt: 'Dobermann Nahaufnahme — intensiver Blick' },
-  { id: '30384004', alt: 'Dobermann auf Gras — elegant' },
-  { id: '7483192', alt: 'Dobermann im Schnee' },
-  { id: '11497215', alt: 'Dobermann sitzend auf Gras' },
-]
-
-function pexelsUrl(id: string, w = 800) {
-  return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`
-}
 
 const courses = [
   {
@@ -232,82 +220,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── GALERIE ──────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="mb-10">
-          <p className="section-label mb-3">Die Rasse</p>
-          <div className="divider mb-6" />
-          <h2 className="font-display tracking-wider text-cream"
-            style={{ fontSize: 'clamp(3.5rem, 7vw, 5.5rem)' }}>
-            DER <span className="text-gradient">DOBERMANN</span>
-          </h2>
-          <p className="mt-4 text-cream/50 max-w-xl">
-            Intelligent, loyal, missverstanden. Der Dobermann ist keine Rasse für jeden —
-            aber für die Richtigen ist er unübertroffen.
-          </p>
-        </div>
-
-        {/* Masonry-style grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-[200px]">
-          {/* Large left image */}
-          <div className="col-span-2 row-span-2 relative overflow-hidden group border border-border">
-            <Image
-              src={pexelsUrl(DOBERMANN_IMAGES[0].id, 800)}
-              alt={DOBERMANN_IMAGES[0].alt}
-              fill
-              className="object-cover img-zoom"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
-            <div className="absolute bottom-4 left-4">
-              <p className="font-display text-sm tracking-widest text-cream/80">INTENSITÄT</p>
-            </div>
-          </div>
-
-          {/* Top right */}
-          <div className="relative overflow-hidden group border border-border">
-            <Image
-              src={pexelsUrl(DOBERMANN_IMAGES[1].id, 600)}
-              alt={DOBERMANN_IMAGES[1].alt}
-              fill
-              className="object-cover img-zoom"
-            />
-            <div className="absolute inset-0 bg-rust/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-
-          {/* Top right 2 */}
-          <div className="relative overflow-hidden group border border-border">
-            <Image
-              src={pexelsUrl(DOBERMANN_IMAGES[4].id, 600)}
-              alt={DOBERMANN_IMAGES[4].alt}
-              fill
-              className="object-cover img-zoom"
-            />
-            <div className="absolute inset-0 bg-rust/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-
-          {/* Bottom right */}
-          <div className="relative overflow-hidden group border border-border">
-            <Image
-              src={pexelsUrl(DOBERMANN_IMAGES[3].id, 600)}
-              alt={DOBERMANN_IMAGES[3].alt}
-              fill
-              className="object-cover img-zoom"
-            />
-            <div className="absolute inset-0 bg-rust/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-
-          {/* Bottom right 2 */}
-          <div className="relative overflow-hidden group border border-border">
-            <Image
-              src={pexelsUrl(DOBERMANN_IMAGES[2].id, 600)}
-              alt={DOBERMANN_IMAGES[2].alt}
-              fill
-              className="object-cover img-zoom"
-            />
-            <div className="absolute inset-0 bg-rust/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-        </div>
-      </section>
 
       {/* ── ÜBER MARCUS ──────────────────────────────────── */}
       <section className="bg-surface border-y border-border relative overflow-hidden">
@@ -447,19 +359,8 @@ export default function HomePage() {
       </section>
 
       {/* ── FINAL CTA ────────────────────────────────────── */}
-      <section className="relative overflow-hidden">
-        {/* Background: large Dobermann silhouette */}
-        <div className="absolute inset-0">
-          <Image
-            src={pexelsUrl(DOBERMANN_IMAGES[0].id, 1600)}
-            alt=""
-            fill
-            className="object-cover object-center opacity-10"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/70" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-28 text-center">
+      <section className="relative overflow-hidden bg-surface border-t border-border">
+        <div className="max-w-7xl mx-auto px-6 py-28 text-center">
           <p className="section-label mb-4">Bereit?</p>
           <h2 className="font-display tracking-wider text-cream leading-none mb-4"
             style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}>
