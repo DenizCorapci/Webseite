@@ -231,8 +231,8 @@ export default function HomePage() {
             <p className="section-label mb-3">Dein Trainer</p>
             <div className="divider mb-6" />
             <h2 className="font-display tracking-wider text-cream mb-8"
-              style={{ fontSize: 'clamp(3.5rem, 7vw, 5.5rem)' }}>
-              MARCUS<br /><span className="text-gradient">WEISSEL</span>
+              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
+              MARCUS <span className="text-gradient">WEISSEL</span>
             </h2>
             <div className="space-y-4 text-cream/70 leading-relaxed">
               <p className="text-cream/90 font-medium text-sm">
