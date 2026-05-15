@@ -232,7 +232,7 @@ export default function HomePage() {
             <div className="divider mb-6" />
             <h2 className="font-display tracking-wider text-cream mb-8"
               style={{ fontSize: 'clamp(3.5rem, 7vw, 5.5rem)' }}>
-              MARCUS
+              MARCUS<br /><span className="text-gradient">WEISSEL</span>
             </h2>
             <div className="space-y-4 text-cream/70 leading-relaxed">
               <p className="text-cream/90 font-medium text-sm">
@@ -268,7 +268,7 @@ export default function HomePage() {
                     <Image src="/pino2.png" alt="Pino" width={64} height={64} className="object-cover object-top scale-125" />
                   </div>
                   <div>
-                    <p className="font-display text-2xl tracking-wider text-cream">MARCUS</p>
+                    <p className="font-display text-2xl tracking-wider text-cream">MARCUS WEISSEL</p>
                     <p className="text-muted text-xs tracking-wide">Hundetrainer · Bad Dog</p>
                   </div>
                 </div>
