@@ -103,8 +103,7 @@ export default function HomePage() {
             </p>
             <h1 className="font-display leading-none tracking-wider text-cream animate-fade-up-delay-1"
               style={{ fontSize: 'clamp(5rem, 12vw, 9rem)' }}>
-              BAD<br />
-              <span className="text-gradient">DOG</span>
+              BAD <span className="text-gradient">DOG</span>
             </h1>
             <p className="mt-3 inline-block bg-rust/20 border border-rust/40 text-rust text-xs font-semibold tracking-widest uppercase px-3 py-1">
               ⚠ Testseite — nicht öffentlich
